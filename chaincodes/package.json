@@ -1,0 +1,25 @@
+{
+  "name": "pharmanet",
+  "version": "1.0.0",
+  "description": "Distributed Pharma Chaincode",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha test --recursive",
+    "start": "fabric-chaincode-node start"
+  },
+  "author": "Soumik Saha",
+  "license": "ISC",
+  "dependencies": {
+    "fabric-contract-api": "^2.4.2",
+    "fabric-shim": "^2.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.18.0",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0",
+    "sinon": "^14.0.0",
+    "sinon-chai": "^3.7.0"
+  }
+}

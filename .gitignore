@@ -1,0 +1,8 @@
+
+chaincodes/node_modules/
+
+bin/
+
+fabric-samples/
+
+chaincodes/package-lock.json
