@@ -17,22 +17,22 @@ cryptogen generate --config=./organizations/cryptogen/crypto-config-Transporter.
 export FABRIC_CFG_PATH=${PWD}/configtx
 
 #Create genesis Block
-configtxgen -outputBlock ./Blocks/pharma-genesis.block -profile FiveOrgsApplicationGenesis -channelID ordererChannel
+configtxgen -outputBlock ./Blocks/pharma-genesis.block -profile PharmaOrdererGenesis -channelID ordererChannel
 # Output the Block details in JSON File. Please create temp folder else it will result in failure
 configtxgen -inspectBlock ./Blocks/pharma-genesis.block > temp/GenesisBlock/pharma-genesis.json
 
 
 #Create Channel
-configtxgen -outputCreateChannelTx ./Channels/pharma-channel.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel
+configtxgen -outputCreateChannelTx ./Channels/pharma-channel.tx -profile PharmaMainChannel -channelID pharmachannel
 # Output the ChannelTX details in JSON File. Please create temp folder else it will result in failure
 configtxgen -inspectChannelCreateTx ./Channels/pharma-channel.tx > temp/Channel/pharma-channel.json
 
 #Update Anchor Peers
-configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ConsumerAnchors.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel -asOrg ConsumerMSP
-configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/DistributorAnchors.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel -asOrg DistributorMSP
-configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ManufacturerAnchors.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel -asOrg ManufacturerMSP
-configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/RetailerAnchors.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel -asOrg RetailerMSP
-configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/TransporterAnchors.tx -profile FiveOrgsApplicationGenesis -channelID pharmachannel -asOrg TransporterMSP
+configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ConsumerAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg ConsumerMSP
+configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/DistributorAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg DistributorMSP
+configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ManufacturerAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg ManufacturerMSP
+configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/RetailerAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg RetailerMSP
+configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/TransporterAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg TransporterMSP
 
 # Output the ChannelTX details in JSON File. Please create temp folder else it will result in failure
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/ConsumerAnchors.tx > temp/AnchorPeerTx/ConsumerAnchors.json

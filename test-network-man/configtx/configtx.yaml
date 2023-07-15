@@ -394,16 +394,49 @@ Channel: &ChannelDefaults
 #   as parameters to the configtxgen tool
 #
 ################################################################################
+
+# Original Profile as per the default Test Network
+# Profiles:
+
+#     FiveOrgsApplicationGenesis:
+#         <<: *ChannelDefaults
+#         Orderer:
+#             <<: *OrdererDefaults
+#             Organizations:
+#                 - *OrdererOrg
+#             Capabilities: *OrdererCapabilities
+#         Consortium: PharmaConsortium
+#         Application:
+#             <<: *ApplicationDefaults
+#             Organizations:
+#                 - *Manufacturer
+#                 - *Distributor
+#                 - *Consumer
+#                 - *Retailer
+#                 - *Transporter
+#             Capabilities: *ApplicationCapabilities
+
 Profiles:
 
-    FiveOrgsApplicationGenesis:
+    PharmaOrdererGenesis:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
             Organizations:
                 - *OrdererOrg
             Capabilities: *OrdererCapabilities
+        Consortiums:
+            PharmaConsortium:
+                Organizations:
+                    - *Manufacturer
+                    - *Distributor
+                    - *Consumer
+                    - *Retailer
+                    - *Transporter    
+    
+    PharmaMainChannel:
         Consortium: PharmaConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
