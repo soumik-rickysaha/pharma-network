@@ -1,11 +1,16 @@
+echo    '================ Setting Path ================'
 export PATH=${PWD}/../bin:$PATH
+
+echo    '================ Creating Folders ================'
 mkdir temp
 mkdir temp/GenesisBlock
 mkdir temp/Channel
 mkdir temp/AnchorPeerTx
 mkdir temp/OrgInfo
 
+
 # Setup crypto materials
+echo    '================ Generating crypto Materials================'
 cryptogen generate --config=./organizations/cryptogen/crypto-config-Consumer.yaml --output="organizations"
 cryptogen generate --config=./organizations/cryptogen/crypto-config-Distributor.yaml --output="organizations"
 cryptogen generate --config=./organizations/cryptogen/crypto-config-Manufacturer.yaml --output="organizations"
@@ -14,20 +19,26 @@ cryptogen generate --config=./organizations/cryptogen/crypto-config-Retailer.yam
 cryptogen generate --config=./organizations/cryptogen/crypto-config-Transporter.yaml --output="organizations"
 
 #setup configtx config file
+echo    '================ Setting ConfigTx Path ================'
 export FABRIC_CFG_PATH=${PWD}/configtx
 
 #Create genesis Block
+echo    '================ Generating Geneis Block for Orderer ================'
 configtxgen -outputBlock ./Blocks/pharma-genesis.block -profile PharmaOrdererGenesis -channelID ordererChannel
 # Output the Block details in JSON File. Please create temp folder else it will result in failure
+echo    '================ Generating JSON Output for Genesis Block ================'
 configtxgen -inspectBlock ./Blocks/pharma-genesis.block > temp/GenesisBlock/pharma-genesis.json
 
 
 #Create Channel
+echo    '================ Generating PharmaChannel ================'
 configtxgen -outputCreateChannelTx ./Channels/pharma-channel.tx -profile PharmaMainChannel -channelID pharmachannel
 # Output the ChannelTX details in JSON File. Please create temp folder else it will result in failure
+echo    '================ Generating JSON Output for the Pharma Channel ================'
 configtxgen -inspectChannelCreateTx ./Channels/pharma-channel.tx > temp/Channel/pharma-channel.json
 
 #Update Anchor Peers
+echo    '================ Updating Anchor Peers ================'
 configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ConsumerAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg ConsumerMSP
 configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/DistributorAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg DistributorMSP
 configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/ManufacturerAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg ManufacturerMSP
@@ -35,6 +46,7 @@ configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/RetailerAnchors.tx -profi
 configtxgen -outputAnchorPeersUpdate ./AnchorPeerTrans/TransporterAnchors.tx -profile PharmaMainChannel -channelID pharmachannel -asOrg TransporterMSP
 
 # Output the ChannelTX details in JSON File. Please create temp folder else it will result in failure
+echo    '================ Generating JSON output for Anchor Peers ================'
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/ConsumerAnchors.tx > temp/AnchorPeerTx/ConsumerAnchors.json
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/DistributorAnchors.tx > temp/AnchorPeerTx/DistributorAnchors.json
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/ManufacturerAnchors.tx > temp/AnchorPeerTx/ManufacturerAnchors.json
@@ -42,6 +54,7 @@ configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/RetailerAnchors.tx > temp/
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/TransporterAnchors.tx > temp/TAnchorPeerTx/ransporterAnchors.json
 
 #Print information on Organization
+echo    '================ Generating Informtion on Organizations ================'
 configtxgen -printOrg ConsumerMSP > temp/OrgInfo/ConsumerMSP.json
 configtxgen -printOrg DistributorMSP > temp/OrgInfo/DistributorMSP.json
 configtxgen -printOrg ManufacturerMSP > temp/OrgInfo/ManufacturerMSP.json
