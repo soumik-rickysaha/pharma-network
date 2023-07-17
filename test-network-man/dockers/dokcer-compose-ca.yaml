@@ -27,7 +27,7 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Consumer
     networks:
-      -pharmaNet
+      - pharmaNet
 
 
   # ================================================ Distributor CA ================================================
@@ -47,7 +47,7 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Distributor
     networks:
-      -pharmaNet
+      - pharmaNet
 
 
   # ================================================ Manufacturer CA ================================================
@@ -67,7 +67,7 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Manufacturer
     networks:
-      -pharmaNet
+      - pharmaNet
 
 # ================================================ Retailer CA ================================================
 
@@ -86,7 +86,7 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Retailer
     networks:
-      -pharmaNet
+      - pharmaNet
 
 # ================================================ Transporter CA ================================================
 
@@ -105,7 +105,7 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Transporter
     networks:
-      -pharmaNet
+      - pharmaNet
 
 # ================================================ Orderer CA ================================================
 
@@ -124,4 +124,4 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     container_name: ca_Orderer
     networks:
-      -pharmaNet
+      - pharmaNet
