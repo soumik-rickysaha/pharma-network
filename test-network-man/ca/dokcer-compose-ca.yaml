@@ -1,0 +1,127 @@
+# Version of the docker file
+
+version: "3.7"
+
+networks:
+  pharmaNet:
+    name: pharma-network
+
+# Creating the Fabric CA for Each Org
+
+services:
+  
+
+  # ================================================ Consumer CA ================================================
+
+  ca_Consumer:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=consumerCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
+    ports:
+      - "7054:7054"
+      - "17054:17054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Consumer
+    networks:
+      -pharmaNet
+
+
+  # ================================================ Distributor CA ================================================
+
+
+  ca_Distributor:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=distributorCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=8054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:18054
+    ports:
+      - "8054:8054"
+      - "18054:18054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Distributor
+    networks:
+      -pharmaNet
+
+
+  # ================================================ Manufacturer CA ================================================
+
+  
+  ca_Manufacturer:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=manufacturerCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=9054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:19054
+    ports:
+      - "9054:9054"
+      - "19054:19054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Manufacturer
+    networks:
+      -pharmaNet
+
+# ================================================ Retailer CA ================================================
+
+  
+  ca_Retailer:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=retailerCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=10054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:20054
+    ports:
+      - "10054:10054"
+      - "20054:20054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Retailer
+    networks:
+      -pharmaNet
+
+# ================================================ Transporter CA ================================================
+
+  
+  ca_Transporter:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=transporterCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=11054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:21054
+    ports:
+      - "11054:11054"
+      - "21054:21054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Transporter
+    networks:
+      -pharmaNet
+
+# ================================================ Orderer CA ================================================
+
+  
+  ca_Orderer:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ordererCA
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=12054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:22054
+    ports:
+      - "12054:12054"
+      - "22054:22054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    container_name: ca_Orderer
+    networks:
+      -pharmaNet
