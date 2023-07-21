@@ -60,3 +60,5 @@ configtxgen -printOrg DistributorMSP > temp/OrgInfo/DistributorMSP.json
 configtxgen -printOrg ManufacturerMSP > temp/OrgInfo/ManufacturerMSP.json
 configtxgen -printOrg RetailerMSP > temp/OrgInfo/RetailerMSP.json
 configtxgen -printOrg TransporterMSP > temp/OrgInfo/TransporterMSP.json
+
+echo    '================ Generating Fabric CA Server ================'
