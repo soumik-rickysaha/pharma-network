@@ -1,0 +1,377 @@
+# Version of the docker file
+
+version: "3.7"
+
+
+#Defining the Network
+networks:
+  pharmaNet:
+    name: pharma-network
+
+
+#defining volumes
+volumes:
+  orderer.example.com:
+  peer0.Consumer.example.com:
+  peer1.Consumer.example.com:
+  peer0.Distributor.example.com:
+  peer1.Distributor.example.com:
+  peer0.Manufacturer.example.com:
+  peer1.Manufacturer.example.com:
+  peer0.Retailer.example.com:
+  peer1.Retailer.example.com:
+  peer0.Transporter.example.com:
+  peer1.Transporter.example.com:
+
+#Defining the services
+
+services:
+
+# Orderer Service
+  orderer.example.com:
+    container_name: orderer.example.com
+    image: hyperledger/fabric-orderer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/pharma-genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer.example.com:9443
+      #TLS
+      - ORDERER_GENERAL_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ../Blocks/pharma-genesis.block:/var/hyperledger/orderer/pharma-genesis.block
+      - ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+      - orderer.example.com:/var/hyperledger/production/orderer
+    ports:
+      - "7050:7050"
+      - "9443:9443"
+    networks:
+      - pharmaNet
+
+# Consumer Service
+  peer0.Consumer.example.com:
+    container_name: peer0.Consumer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.Consumer.example.com
+      - CORE_PEER_ADDRESS=peer0.Consumer.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Consumer.example.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Consumer.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Consumer.example.com:7051
+      - CORE_PEER_LOCALMSPID=ConsumerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.Consumer.example.com:9444
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer0.Consumer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "7051:7051"
+      - "9444:9444"
+    networks:
+      - pharmaNet
+
+  peer1.Consumer.example.com:
+    container_name: peer1.Consumer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer1.Consumer.example.com
+      - CORE_PEER_ADDRESS=peer1.Consumer.example.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Consumer.example.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Consumer.example.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Consumer.example.com:8051
+      - CORE_PEER_LOCALMSPID=ConsumerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.Consumer.example.com:9445
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Consumer.example.com/peers/peer1.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer1.Consumer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "8051:8051"
+      - "9445:9445"
+    networks:
+      - pharmaNet
+
+# Distributor Service
+  peer0.Distributor.example.com:
+    container_name: peer0.Distributor.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.Distributor.example.com
+      - CORE_PEER_ADDRESS=peer0.Distributor.example.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Distributor.example.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Distributor.example.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Distributor.example.com:9051
+      - CORE_PEER_LOCALMSPID=DistributorMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.Distributor.example.com:9446
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer0.Distributor.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "9051:9051"
+      - "9446:9446"
+    networks:
+      - pharmaNet
+
+  peer1.Distributor.example.com:
+    container_name: peer1.Distributor.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer1.Distributor.example.com
+      - CORE_PEER_ADDRESS=peer1.Distributor.example.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Distributor.example.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Distributor.example.com:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Distributor.example.com:10051
+      - CORE_PEER_LOCALMSPID=DistributorMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.Distributor.example.com:9447
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Distributor.example.com/peers/peer1.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer1.Distributor.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "10051:10051"
+      - "9447:9447"
+    networks:
+      - pharmaNet
+
+# Manufacturer Service
+  peer0.Manufacturer.example.com:
+    container_name: peer0.Manufacturer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.Manufacturer.example.com
+      - CORE_PEER_ADDRESS=peer0.Manufacturer.example.com:11051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Manufacturer.example.com:11052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Manufacturer.example.com:11051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Manufacturer.example.com:11051
+      - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.Manufacturer.example.com:9448
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer0.Manufacturer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "11051:11051"
+      - "9448:9448"
+    networks:
+      - pharmaNet
+
+  peer1.Manufacturer.example.com:
+    container_name: peer1.Manufacturer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer1.Manufacturer.example.com
+      - CORE_PEER_ADDRESS=peer1.Manufacturer.example.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Manufacturer.example.com:12052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Manufacturer.example.com:12051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Manufacturer.example.com:12051
+      - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.Manufacturer.example.com:9449
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer1.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer1.Manufacturer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "12051:12051"
+      - "9449:9449"
+    networks:
+      - pharmaNet
+
+# Retailer Service
+  peer0.Retailer.example.com:
+    container_name: peer0.Retailer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.Retailer.example.com
+      - CORE_PEER_ADDRESS=peer0.Retailer.example.com:13051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:13051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Retailer.example.com:13052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:13052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Retailer.example.com:13051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Retailer.example.com:13051
+      - CORE_PEER_LOCALMSPID=RetailerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.Retailer.example.com:9450
+      #TLS
+      - CORE_PEER_TLS_ENABLED=fasle
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer0.Retailer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "13051:13051"
+      - "9450:9450"
+    networks:
+      - pharmaNet
+
+  peer1.Retailer.example.com:
+    container_name: peer1.Retailer.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer1.Retailer.example.com
+      - CORE_PEER_ADDRESS=peer1.Retailer.example.com:14051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:14051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Retailer.example.com:14052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:14052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Retailer.example.com:14051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Retailer.example.com:14051
+      - CORE_PEER_LOCALMSPID=RetailerMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.Retailer.example.com:9451
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Retailer.example.com/peers/peer1.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer1.Retailer.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "14051:14051"
+      - "9451:9451"
+    networks:
+      - pharmaNet
+
+# Transporter Service
+  peer0.Transporter.example.com:
+    container_name: peer0.Transporter.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer0.Transporter.example.com
+      - CORE_PEER_ADDRESS=peer0.Transporter.example.com:15051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:15051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Transporter.example.com:15052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:15052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Transporter.example.com:15051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Transporter.example.com:15051
+      - CORE_PEER_LOCALMSPID=TransporterMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.Transporter.example.com:9452
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer0.Transporter.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "15051:15051"
+      - "9452:9452"
+    networks:
+      - pharmaNet
+
+  peer1.Transporter.example.com:
+    container_name: peer1.Transporter.example.com
+    image: hyperledger/fabric-peer:latest
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=peer1.Transporter.example.com
+      - CORE_PEER_ADDRESS=peer1.Transporter.example.com:16051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:16051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Transporter.example.com:16052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:16052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Transporter.example.com:16051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Transporter.example.com:16051
+      - CORE_PEER_LOCALMSPID=TransporterMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.Transporter.example.com:9453
+      #TLS
+      - CORE_PEER_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - ../organizations/peerOrganizations/Transporter.example.com/peers/peer1.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
+      - peer1.Transporter.example.com:/var/hyperledger/production
+    depends_on:
+      - orderer.example.com
+    ports:
+      - "16051:16051"
+      - "9453:9453"
+    networks:
+      - pharmaNet
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
+    depends_on:
+      - peer0.Consumer.example.com
+      - peer1.Consumer.example.com
+      - peer0.Distributor.example.com
+      - peer1.Distributor.example.com
+      - peer0.Manufacturer.example.com
+      - peer1.Manufacturer.example.com
+      - peer0.Retailer.example.com
+      - peer1.Retailer.example.com
+      - peer0.Transporter.example.com
+      - peer1.Transporter.example.com
+    networks:
+      - pharmaNet
