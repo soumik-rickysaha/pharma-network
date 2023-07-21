@@ -61,4 +61,6 @@ configtxgen -printOrg ManufacturerMSP > temp/OrgInfo/ManufacturerMSP.json
 configtxgen -printOrg RetailerMSP > temp/OrgInfo/RetailerMSP.json
 configtxgen -printOrg TransporterMSP > temp/OrgInfo/TransporterMSP.json
 
-echo    '================ Generating Fabric CA Server ================'
+echo    '================ Starting Dockers ================'
+
+docker compose -f dockers/docker-compose-pharmaNet.yaml -f dockers/docker-compose-ca.yaml up -d

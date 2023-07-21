@@ -1,3 +1,7 @@
+docker compose -f dockers/docker-compose-pharmaNet.yaml -f dockers/docker-compose-ca.yaml down
+docker volume prune -f
+
+
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/ordererOrganizations
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/Blocks
