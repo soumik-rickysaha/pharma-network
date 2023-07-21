@@ -24,7 +24,7 @@ export FABRIC_CFG_PATH=${PWD}/configtx
 
 #Create genesis Block
 echo    '================ Generating Geneis Block for Orderer ================'
-configtxgen -outputBlock ./Blocks/pharma-genesis.block -profile PharmaOrdererGenesis -channelID ordererChannel
+configtxgen -outputBlock ./Blocks/pharma-genesis.block -profile PharmaOrdererGenesis -channelID ordererchannel
 # Output the Block details in JSON File. Please create temp folder else it will result in failure
 echo    '================ Generating JSON Output for Genesis Block ================'
 configtxgen -inspectBlock ./Blocks/pharma-genesis.block > temp/GenesisBlock/pharma-genesis.json
