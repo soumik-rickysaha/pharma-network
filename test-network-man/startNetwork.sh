@@ -51,7 +51,7 @@ configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/ConsumerAnchors.tx > temp/
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/DistributorAnchors.tx > temp/AnchorPeerTx/DistributorAnchors.json
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/ManufacturerAnchors.tx > temp/AnchorPeerTx/ManufacturerAnchors.json
 configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/RetailerAnchors.tx > temp/AnchorPeerTx/RetailerAnchors.json
-configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/TransporterAnchors.tx > temp/TAnchorPeerTx/ransporterAnchors.json
+configtxgen -inspectChannelCreateTx ./AnchorPeerTrans/TransporterAnchors.tx > temp/AnchorPeerTx/ransporterAnchors.json
 
 #Print information on Organization
 echo    '================ Generating Informtion on Organizations ================'

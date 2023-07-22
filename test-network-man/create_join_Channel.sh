@@ -1,7 +1,8 @@
 # Creating channel
 echo    '================ Creating Channel on Orderer ================'
 export PATH=${PWD}/../bin:$PATH
-export FABRIC_CFG_PATH=$PWD/../config/
+# export FABRIC_CFG_PATH=$PWD/../config/
+export FABRIC_CFG_PATH=${PWD}/configtx
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem
 export CORE_PEER_LOCALMSPID="ManufacturerMSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt
@@ -13,9 +14,11 @@ peer channel create -o 0.0.0.0:7050 -c pharmachannel --ordererTLSHostnameOverrid
 echo    '================ Setting Block File ================'
 export BLOCKFILE="./Blocks/pharma-channel.block"
 
+
 # Joinning peers of Manufacturers
 echo    '================ Joinning peer0 of Manufacturer ================'
 peer channel join -b $BLOCKFILE
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ./AnchorPeerTrans/ManufacturerAnchors.tx --cafile $ORDERER_CA
 
 echo    '================ Joinning peer1 of Manufacturer ================'
 export CORE_PEER_ADDRESS=localhost:12051
@@ -28,6 +31,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consum
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.example.com/users/Admin@Consumer.example.com/msp/
 export CORE_PEER_ADDRESS=localhost:7051
 peer channel join -b $BLOCKFILE
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ./AnchorPeerTrans/ConsumerAnchors.tx --cafile $ORDERER_CA
 
 echo    '================ Joinning peer1 of Consumer ================'
 export CORE_PEER_ADDRESS=localhost:8051
@@ -40,6 +44,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distri
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp/
 export CORE_PEER_ADDRESS=localhost:9051
 peer channel join -b $BLOCKFILE
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ./AnchorPeerTrans/DistributorAnchors.tx --cafile $ORDERER_CA
 
 echo    '================ Joinning peer1 of Distributor ================'
 export CORE_PEER_ADDRESS=localhost:10051
@@ -51,6 +56,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retail
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.example.com/users/Admin@Retailer.example.com/msp/
 export CORE_PEER_ADDRESS=localhost:13051
 peer channel join -b $BLOCKFILE
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ./AnchorPeerTrans/RetailerAnchors.tx --cafile $ORDERER_CA
 
 echo    '================ Joinning peer1 of Retailer ================'
 export CORE_PEER_ADDRESS=localhost:14051
@@ -62,6 +68,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transp
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.example.com/users/Admin@Transporter.example.com/msp/
 export CORE_PEER_ADDRESS=localhost:15051
 peer channel join -b $BLOCKFILE
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ./AnchorPeerTrans/TransporterAnchors.tx --cafile $ORDERER_CA
 
 echo    '================ Joinning peer1 of Transporter ================'
 export CORE_PEER_ADDRESS=localhost:16051
