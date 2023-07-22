@@ -1,5 +1,7 @@
 docker compose -f dockers/docker-compose-pharmaNet.yaml -f dockers/docker-compose-ca.yaml down
 docker volume prune -f
+docker rmi $(docker images --filter=reference="dev-peer*")
+
 
 
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/ordererOrganizations

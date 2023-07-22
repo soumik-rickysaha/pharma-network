@@ -59,6 +59,8 @@ services:
     container_name: peer0.Consumer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer0.Consumer.example.com
       - CORE_PEER_ADDRESS=peer0.Consumer.example.com:7051
@@ -74,7 +76,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Consumer.example.com:/var/hyperledger/production
     depends_on:
@@ -89,6 +91,8 @@ services:
     container_name: peer1.Consumer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer1.Consumer.example.com
       - CORE_PEER_ADDRESS=peer1.Consumer.example.com:8051
@@ -104,7 +108,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Consumer.example.com/peers/peer1.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Consumer.example.com:/var/hyperledger/production
     depends_on:
@@ -120,6 +124,8 @@ services:
     container_name: peer0.Distributor.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer0.Distributor.example.com
       - CORE_PEER_ADDRESS=peer0.Distributor.example.com:9051
@@ -135,7 +141,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Distributor.example.com:/var/hyperledger/production
     depends_on:
@@ -150,6 +156,8 @@ services:
     container_name: peer1.Distributor.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer1.Distributor.example.com
       - CORE_PEER_ADDRESS=peer1.Distributor.example.com:10051
@@ -165,7 +173,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Distributor.example.com/peers/peer1.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Distributor.example.com:/var/hyperledger/production
     depends_on:
@@ -181,6 +189,8 @@ services:
     container_name: peer0.Manufacturer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer0.Manufacturer.example.com
       - CORE_PEER_ADDRESS=peer0.Manufacturer.example.com:11051
@@ -196,7 +206,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Manufacturer.example.com:/var/hyperledger/production
     depends_on:
@@ -211,6 +221,8 @@ services:
     container_name: peer1.Manufacturer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer1.Manufacturer.example.com
       - CORE_PEER_ADDRESS=peer1.Manufacturer.example.com:12051
@@ -226,7 +238,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer1.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Manufacturer.example.com:/var/hyperledger/production
     depends_on:
@@ -242,6 +254,8 @@ services:
     container_name: peer0.Retailer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer0.Retailer.example.com
       - CORE_PEER_ADDRESS=peer0.Retailer.example.com:13051
@@ -257,7 +271,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Retailer.example.com:/var/hyperledger/production
     depends_on:
@@ -272,6 +286,8 @@ services:
     container_name: peer1.Retailer.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer1.Retailer.example.com
       - CORE_PEER_ADDRESS=peer1.Retailer.example.com:14051
@@ -287,7 +303,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Retailer.example.com/peers/peer1.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Retailer.example.com:/var/hyperledger/production
     depends_on:
@@ -303,6 +319,8 @@ services:
     container_name: peer0.Transporter.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer0.Transporter.example.com
       - CORE_PEER_ADDRESS=peer0.Transporter.example.com:15051
@@ -318,7 +336,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Transporter.example.com:/var/hyperledger/production
     depends_on:
@@ -333,6 +351,8 @@ services:
     container_name: peer1.Transporter.example.com
     image: hyperledger/fabric-peer:latest
     environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=pharma-network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=peer1.Transporter.example.com
       - CORE_PEER_ADDRESS=peer1.Transporter.example.com:16051
@@ -348,7 +368,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
-      - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Transporter.example.com/peers/peer1.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Transporter.example.com:/var/hyperledger/production
     depends_on:

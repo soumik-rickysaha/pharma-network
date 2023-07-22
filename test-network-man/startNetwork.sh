@@ -8,6 +8,7 @@ mkdir temp/GenesisBlock
 mkdir temp/Channel
 mkdir temp/AnchorPeerTx
 mkdir temp/OrgInfo
+mkdir temp/Chaincode
 
 
 # Setup crypto materials
