@@ -362,6 +362,7 @@ services:
     command: /bin/bash
     volumes:
       - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
+      - ../AnchorPeerScripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/AnchorPeerScripts
     depends_on:
       - peer0.Consumer.example.com
       - peer1.Consumer.example.com
