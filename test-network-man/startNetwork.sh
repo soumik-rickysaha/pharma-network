@@ -64,3 +64,4 @@ configtxgen -printOrg TransporterMSP > temp/OrgInfo/TransporterMSP.json
 echo    '================ Starting Dockers ================'
 
 docker compose -f dockers/docker-compose-pharmaNet.yaml -f dockers/docker-compose-ca.yaml up -d
+sleep 15
