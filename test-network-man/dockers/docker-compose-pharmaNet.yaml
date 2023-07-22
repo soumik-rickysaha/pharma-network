@@ -74,6 +74,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Consumer.example.com:/var/hyperledger/production
     depends_on:
@@ -103,6 +104,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Consumer.example.com/peers/peer1.Consumer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Consumer.example.com:/var/hyperledger/production
     depends_on:
@@ -133,6 +135,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Distributor.example.com:/var/hyperledger/production
     depends_on:
@@ -162,6 +165,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Distributor.example.com/peers/peer1.Distributor.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Distributor.example.com:/var/hyperledger/production
     depends_on:
@@ -192,6 +196,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Manufacturer.example.com:/var/hyperledger/production
     depends_on:
@@ -221,6 +226,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Manufacturer.example.com/peers/peer1.Manufacturer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Manufacturer.example.com:/var/hyperledger/production
     depends_on:
@@ -251,6 +257,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Retailer.example.com:/var/hyperledger/production
     depends_on:
@@ -280,6 +287,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Retailer.example.com/peers/peer1.Retailer.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Retailer.example.com:/var/hyperledger/production
     depends_on:
@@ -310,6 +318,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
       - peer0.Transporter.example.com:/var/hyperledger/production
     depends_on:
@@ -339,6 +348,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     volumes:
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/Transporter.example.com/peers/peer1.Transporter.example.com/msp:/etc/hyperledger/fabric/msp
       - peer1.Transporter.example.com:/var/hyperledger/production
     depends_on:
@@ -361,6 +371,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
+      - /var/run:/host/var/run
       - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
       - ../AnchorPeerScripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/AnchorPeerScripts
     depends_on:
