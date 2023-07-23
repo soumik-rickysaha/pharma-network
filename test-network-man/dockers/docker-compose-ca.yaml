@@ -14,7 +14,7 @@ services:
   # ================================================ Consumer CA ================================================
 
   ca_Consumer:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=consumerCA
@@ -34,7 +34,7 @@ services:
 
 
   ca_Distributor:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=distributorCA
@@ -54,7 +54,7 @@ services:
 
   
   ca_Manufacturer:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=manufacturerCA
@@ -73,7 +73,7 @@ services:
 
   
   ca_Retailer:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=retailerCA
@@ -92,7 +92,7 @@ services:
 
   
   ca_Transporter:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=transporterCA
@@ -111,7 +111,7 @@ services:
 
   
   ca_Orderer:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:1.5.5
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ordererCA

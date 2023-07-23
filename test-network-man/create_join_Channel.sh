@@ -2,7 +2,7 @@
 echo    '================ Creating Channel on Orderer ================'
 export PATH=${PWD}/../bin:$PATH
 # export FABRIC_CFG_PATH=$PWD/../config/
-export FABRIC_CFG_PATH=${PWD}/configtx
+export FABRIC_CFG_PATH=${PWD}/../config
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem
 export CORE_PEER_LOCALMSPID="ManufacturerMSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt

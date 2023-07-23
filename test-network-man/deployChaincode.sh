@@ -6,7 +6,7 @@ export CC_SRC_PATH=../chaincodes
 export CC_RUNTIME_LANGUAGE=node
 export CC_VERSION=1.0
 export CC_SEQUENCE=1
-export FABRIC_CFG_PATH=${PWD}/configtx
+export FABRIC_CFG_PATH=${PWD}/../config
 
 # sleep 10
 # Package the chaincode

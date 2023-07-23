@@ -72,7 +72,7 @@ Organizations:
                 Rule: "OR('ManufacturerMSP.peer')"
         AnchorPeers:
         - Host: peer0.Manufacturer.example.com
-          Port: 7051
+          Port: 11051
 
     - &Distributor
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -102,7 +102,7 @@ Organizations:
                 Rule: "OR('DistributorMSP.peer')"
         AnchorPeers:
         - Host: peer0.Distributor.example.com
-          Port: 8051
+          Port: 9051
     
     - &Consumer
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -132,7 +132,7 @@ Organizations:
                 Rule: "OR('ConsumerMSP.peer')"
         AnchorPeers:
         - Host: peer0.Consumer.example.com
-          Port: 9051                
+          Port: 7051                
 
     - &Retailer
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -162,7 +162,7 @@ Organizations:
                 Rule: "OR('RetailerMSP.peer')"
         AnchorPeers:
         - Host: peer0.Retailer.example.com
-          Port: 10051                
+          Port: 13051                
 
     - &Transporter
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -192,7 +192,7 @@ Organizations:
                 Rule: "OR('TransporterMSP.peer')"
         AnchorPeers:
         - Host: peer0.Transporter.example.com
-          Port: 11051                
+          Port: 15051                
 
 ################################################################################
 #
