@@ -21,10 +21,12 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufa
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/users/Admin@Manufacturer.example.com/msp
 export CORE_PEER_ADDRESS=0.0.0.0:11051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer1 of Manufacturer ================'
 export CORE_PEER_ADDRESS=0.0.0.0:12051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer0 of Consumer ================'
 export CORE_PEER_LOCALMSPID="ConsumerMSP"
@@ -32,10 +34,12 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consum
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.example.com/users/Admin@Consumer.example.com/msp
 export CORE_PEER_ADDRESS=0.0.0.0:7051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer1 of Consumer ================'
 export CORE_PEER_ADDRESS=0.0.0.0:8051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer0 of Distributor ================'
 export CORE_PEER_LOCALMSPID="DistributorMSP"
@@ -43,10 +47,12 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distri
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp
 export CORE_PEER_ADDRESS=0.0.0.0:9051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer1 of Distributor ================'
 export CORE_PEER_ADDRESS=0.0.0.0:10051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer0 of Retailer ================'
 export CORE_PEER_LOCALMSPID="RetailerMSP"
@@ -54,10 +60,12 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retail
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.example.com/users/Admin@Retailer.example.com/msp
 export CORE_PEER_ADDRESS=0.0.0.0:13051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer1 of Retailer ================'
 export CORE_PEER_ADDRESS=0.0.0.0:14051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer0 of Transporter ================'
 export CORE_PEER_LOCALMSPID="TransporterMSP"
@@ -65,10 +73,12 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transp
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.example.com/users/Admin@Transporter.example.com/msp
 export CORE_PEER_ADDRESS=0.0.0.0:15051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 echo    '================ Deploying the chancode on peer1 of Transporter ================'
 export CORE_PEER_ADDRESS=0.0.0.0:16051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
+sleep 10
 
 # Query the chaincode
 chaincodePackageID=$(peer lifecycle chaincode queryinstalled | sed -n 's/^Package ID: //p')
@@ -134,6 +144,7 @@ sleep 20
 echo    '================ Checking Commit Readiness ================'
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness1.json
 
+sleep 20
 # Commiting the chaincode
 echo    '================ Commiting Chaincode ================'
 peer lifecycle chaincode commit -o 0.0.0.0:7050 --ordererTLSHostnameOverride orderer.example.com --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME}  --peerAddresses 0.0.0.0:11051 RootCertFiles ${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt --peerAddresses 0.0.0.0:7051 RootCertFiles ${PWD}/organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/tls/ca.crt --peerAddresses 0.0.0.0:9051 RootCertFiles ${PWD}/organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt --peerAddresses 0.0.0.0:13051 RootCertFiles ${PWD}/organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/tls/ca.crt --peerAddresses 0.0.0.0:15051 RootCertFiles ${PWD}/organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/tls/ca.crt --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --init-required
