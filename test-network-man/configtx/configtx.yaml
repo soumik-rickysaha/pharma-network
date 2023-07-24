@@ -279,10 +279,10 @@ Application: &ApplicationDefaults
             Rule: "MAJORITY Admins"
         LifecycleEndorsement:
             Type: ImplicitMeta
-            Rule: "MAJORITY Endorsement"
+            Rule: "ANY Endorsement"
         Endorsement:
             Type: ImplicitMeta
-            Rule: "MAJORITY Endorsement"
+            Rule: "ANY Endorsement"
 
     Capabilities:
         <<: *ApplicationCapabilities
@@ -320,7 +320,7 @@ Orderer: &OrdererDefaults
     BatchSize:
 
         # Max Message Count: The maximum number of messages to permit in a batch
-        MaxMessageCount: 10
+        MaxMessageCount: 500
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch.
@@ -379,6 +379,12 @@ Channel: &ChannelDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Endorsement"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Endorsement"
 
     # Capabilities describes the channel level capabilities, see the
     # dedicated Capabilities section elsewhere in this file for a full
@@ -425,6 +431,8 @@ Profiles:
             Organizations:
                 - *OrdererOrg
             Capabilities: *OrdererCapabilities
+        Capabilities:
+            <<: *ChannelCapabilities
         Consortiums:
             PharmaConsortium:
                 Organizations:
@@ -445,4 +453,5 @@ Profiles:
                 - *Consumer
                 - *Retailer
                 - *Transporter
-            Capabilities: *ApplicationCapabilities
+            Capabilities: 
+                <<: *ApplicationCapabilities
