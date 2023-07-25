@@ -1,15 +1,15 @@
 export PATH=${PWD}/../../bin:$PATH
 export FABRIC_CFG_PATH=$PWD/../config/
 # export FABRIC_CFG_PATH=${PWD}/../configtx
-export ORDERER_CA=${PWD}/../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem
+export ORDERER_CA=${PWD}/../organizations/ordererOrganizations/pharma-network.com/orderers/orderer.pharma-network.com/msp/cacerts/ca.pharma-network.com-cert.pem
 export CORE_PEER_LOCALMSPID="ManufacturerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/../organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/../organizations/peerOrganizations/Manufacturer.example.com/users/Admin@Manufacturer.example.com/msp/
-export CORE_PEER_ADDRESS=peer0.Manufacturer.example.com:11051
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/../organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer0.Manufacturer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/../organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp/
+export CORE_PEER_ADDRESS=peer0.Manufacturer.pharma-network.com:11051
 peer channel fetch config config_block.pb -o 0.0.0.0:7050 -c pharmachannel --cafile $ORDERER_CA
 
 configtxlator proto_decode --input config_block.pb --type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
-export HOST="peer0.Manufacturer.example.com:"
+export HOST="peer0.Manufacturer.pharma-network.com:"
 export PORT=11051
 jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
 

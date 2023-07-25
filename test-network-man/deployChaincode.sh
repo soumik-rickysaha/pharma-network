@@ -16,77 +16,86 @@ peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang 
 
 # Deploy of chaincode on all ORGS
 echo    '================ Deploying the chancode on peer0 of Manufacturer ================'
-# export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem
+# export ORDERER_CA=${PWD}/organizations/ordererOrganizations/pharma-network.com/orderers/orderer.pharma-network.com/msp/tlscacerts/tlsca.pharma-network.com-cert.pem
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/pharma-network.com/orderers/orderer.pharma-network.com/msp/cacerts/ca.pharma-network.com-cert.pem
 export CORE_PEER_LOCALMSPID="ManufacturerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/users/Admin@Manufacturer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer0.Manufacturer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:11051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer1 of Manufacturer ================'
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer1.Manufacturer.example.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer1.Manufacturer.pharma-network.com/tls/ca.crt
 export CORE_PEER_ADDRESS=localhost:12051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer0 of Consumer ================'
 export CORE_PEER_LOCALMSPID="ConsumerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.example.com/users/Admin@Consumer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/users/Admin@Consumer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer1 of Consumer ================'
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt
 export CORE_PEER_ADDRESS=localhost:8051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer0 of Distributor ================'
 export CORE_PEER_LOCALMSPID="DistributorMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer0.Distributor.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/users/Admin@Distributor.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:9051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer1 of Distributor ================'
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.example.com/peers/peer1.Distributor.example.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer1.Distributor.pharma-network.com/tls/ca.crt
 export CORE_PEER_ADDRESS=localhost:10051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer0 of Retailer ================'
 export CORE_PEER_LOCALMSPID="RetailerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.example.com/users/Admin@Retailer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer0.Retailer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/users/Admin@Retailer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:13051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer1 of Retailer ================'
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.example.com/peers/peer1.Retailer.example.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer1.Retailer.pharma-network.com/tls/ca.crt
 export CORE_PEER_ADDRESS=localhost:14051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer0 of Transporter ================'
 export CORE_PEER_LOCALMSPID="TransporterMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.example.com/users/Admin@Transporter.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer0.Transporter.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:15051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
+sleep 5
 
 echo    '================ Deploying the chancode on peer1 of Transporter ================'
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.example.com/peers/peer1.Transporter.example.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer1.Transporter.pharma-network.com/tls/ca.crt
 export CORE_PEER_ADDRESS=localhost:16051
 peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
-
+sleep 20
 # Query the chaincode
 chaincodePackageID=$(peer lifecycle chaincode queryinstalled | sed -n 's/^Package ID: \(.*\), Label:.*/\1/p')
 
@@ -106,40 +115,40 @@ echo "Package ID stored in PACKAGE_ID environment variable: $PACKAGE_ID"
 
 echo    '================ Approving the Chaincode for the Org : Manufacturer ================'
 export CORE_PEER_LOCALMSPID="ManufacturerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.example.com/users/Admin@Manufacturer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer0.Manufacturer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:11051
 peer lifecycle chaincode approveformyorg -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE}
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness.json
 
 echo    '================ Approving the Chaincode for the Org : Consumer ================'
 export CORE_PEER_LOCALMSPID="ConsumerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.example.com/users/Admin@Consumer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/users/Admin@Consumer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 peer lifecycle chaincode approveformyorg -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE}
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness.json
 
 echo    '================ Approving the Chaincode for the Org : Distributor ================'
 export CORE_PEER_LOCALMSPID="DistributorMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer0.Distributor.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/users/Admin@Distributor.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:9051
 peer lifecycle chaincode approveformyorg -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE}
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness.json
 
 echo    '================ Approving the Chaincode for the Org : Retailer ================'
 export CORE_PEER_LOCALMSPID="RetailerMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.example.com/users/Admin@Retailer.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer0.Retailer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/users/Admin@Retailer.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:13051
 peer lifecycle chaincode approveformyorg -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE}
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness.json
 
 echo    '================ Approving the Chaincode for the Org : Transporter ================'
 export CORE_PEER_LOCALMSPID="TransporterMSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.example.com/users/Admin@Transporter.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer0.Transporter.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp
 export CORE_PEER_ADDRESS=localhost:15051
 peer lifecycle chaincode approveformyorg -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE}
 peer lifecycle chaincode checkcommitreadiness --channelID pharmachannel --name ${CC_NAME} --version ${CC_VERSION} --sequence ${CC_SEQUENCE} --output json > temp/Chaincode/CommitReadiness.json
@@ -148,7 +157,7 @@ sleep 20
 
 
 echo    '================ Commiting Chaincode ================'
-peer lifecycle chaincode commit -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Manufacturer.example.com/peers/peer0.Manufacturer.example.com/tls/ca.crt --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Consumer.example.com/peers/peer0.Consumer.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt --peerAddresses localhost:13051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Retailer.example.com/peers/peer0.Retailer.example.com/tls/ca.crt --peerAddresses localhost:15051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Transporter.example.com/peers/peer0.Transporter.example.com/tls/ca.crt --version ${CC_VERSION} --sequence ${CC_SEQUENCE} #--init-required #--signature-policy "OR ('ManufacturerMSP.peer','DistributorMSP.peer','ConsumerMSP.peer','RetailerMSP.peer','TransporterMSP.peer')"
+peer lifecycle chaincode commit -o localhost:7050 --cafile $ORDERER_CA --channelID pharmachannel --name ${CC_NAME} --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer0.Manufacturer.pharma-network.com/tls/ca.crt --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer0.Distributor.pharma-network.com/tls/ca.crt --peerAddresses localhost:13051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer0.Retailer.pharma-network.com/tls/ca.crt --peerAddresses localhost:15051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer0.Transporter.pharma-network.com/tls/ca.crt --version ${CC_VERSION} --sequence ${CC_SEQUENCE} #--init-required #--signature-policy "OR ('ManufacturerMSP.peer','DistributorMSP.peer','ConsumerMSP.peer','RetailerMSP.peer','TransporterMSP.peer')"
 
 sleep 10
 

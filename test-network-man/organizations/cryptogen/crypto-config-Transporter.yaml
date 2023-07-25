@@ -12,7 +12,7 @@ PeerOrgs:
   # Transporter
   # ---------------------------------------------------------------------------
   - Name: Transporter
-    Domain: Transporter.example.com
+    Domain: Transporter.pharma-network.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -30,8 +30,8 @@ PeerOrgs:
     #                 which obtains its values from the Spec.Hostname and
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
-    #   - Hostname: foo # implicitly "foo.Transporter.example.com"
-    #     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above
+    #   - Hostname: foo # implicitly "foo.Transporter.pharma-network.com"
+    #     CommonName: foo27.org5.pharma-network.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz
     # ---------------------------------------------------------------------------
