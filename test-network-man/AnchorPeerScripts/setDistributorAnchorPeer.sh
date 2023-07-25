@@ -1,12 +1,12 @@
 export PATH=${PWD}/../../bin:$PATH
-# export FABRIC_CFG_PATH=$PWD/../config/
-export FABRIC_CFG_PATH=${PWD}/../configtx
+export FABRIC_CFG_PATH=$PWD/../config/
+# export FABRIC_CFG_PATH=${PWD}/../configtx
 export ORDERER_CA=${PWD}/../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/cacerts/ca.example.com-cert.pem
 export CORE_PEER_LOCALMSPID="DistributorMSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/../organizations/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt
 export CORE_PEER_MSPCONFIGPATH=${PWD}/../organizations/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp/
 export CORE_PEER_ADDRESS=peer0.Distributor.example.com:9051
-peer channel fetch config config_block.pb -o 0.0.0.0:7050 --ordererTLSHostnameOverride orderer.example.com -c pharmachannel --cafile $ORDERER_CA
+peer channel fetch config config_block.pb -o 0.0.0.0:7050 -c pharmachannel --cafile $ORDERER_CA
 
 configtxlator proto_decode --input config_block.pb --type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
 export HOST="peer0.Distributor.example.com:"
@@ -20,4 +20,4 @@ configtxlator proto_decode --input config_update.pb --type common.ConfigUpdate >
 echo '{"payload":{"header":{"channel_header":{"channel_id":"pharmachannel", "type":2}},"data":{"config_update":'$(cat config_update.json)'}}}' | jq . >config_update_in_envelope.json
 configtxlator proto_encode --input config_update_in_envelope.json --type common.Envelope >"${CORE_PEER_LOCALMSPID}anchors.tx"
 
-peer channel update -o 0.0.0.0:7050 --ordererTLSHostnameOverride orderer.example.com -c pharmachannel -f ${CORE_PEER_LOCALMSPID}anchors.tx  --cafile $ORDERER_CA
+peer channel update -o 0.0.0.0:7050 -c pharmachannel -f ${CORE_PEER_LOCALMSPID}anchors.tx  --cafile $ORDERER_CA

@@ -10,8 +10,8 @@
   "author": "Soumik",
   "license": "ISC",
   "dependencies": {
-    "fabric-contract-api": "^2.5.2",
-    "fabric-shim": "^2.5.2"
+    "fabric-contract-api": "^2.2.3",
+    "fabric-shim": "^2.2.3"
   },
   "devDependencies": {
     "chai": "4.3.7",

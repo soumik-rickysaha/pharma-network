@@ -381,10 +381,10 @@ Channel: &ChannelDefaults
             Rule: "MAJORITY Admins"
         LifecycleEndorsement:
             Type: ImplicitMeta
-            Rule: "ANY Endorsement"
+            Rule: "MAJORITY Endorsement"
         Endorsement:
             Type: ImplicitMeta
-            Rule: "ANY Endorsement"
+            Rule: "MAJORITY Endorsement"
 
     # Capabilities describes the channel level capabilities, see the
     # dedicated Capabilities section elsewhere in this file for a full
