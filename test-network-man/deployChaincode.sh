@@ -1,7 +1,7 @@
 # Setting the ENV variables
 export PATH=${PWD}/../bin:$PATH
 export CHANNEL_NAME=pharmachannel
-export CC_NAME=certnet
+export CC_NAME=pharmanet
 export CC_SRC_PATH=../chaincodes
 export CC_RUNTIME_LANGUAGE=node
 export CC_VERSION=1.0
@@ -162,4 +162,12 @@ peer lifecycle chaincode commit -o localhost:7050 --cafile $ORDERER_CA --channel
 sleep 10
 
 peer lifecycle chaincode querycommitted --channelID pharmachannel --name ${CC_NAME}
-peer chaincode invoke -o localhost:7050 -C pharmachannel -n certnet -c '{"Args":["certnet:instantiate"]}' --cafile $ORDERER_CA
+
+sleep 5
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"Args":["pharmanet:instantiate"]}' --cafile $ORDERER_CA
+
+sleep 5
+
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"registerCompany","Args":["1","testCompany","Mars","1"]}' --cafile $ORDERER_CA
+
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"getRegisterCompany","Args":["1"]}' --cafile $ORDERER_CA
