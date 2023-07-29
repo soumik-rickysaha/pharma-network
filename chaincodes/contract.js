@@ -247,7 +247,7 @@ class PharmaNetContract extends Contract {
           transporter: transporterKey,
           status: "in-transit",
           createdAt: ctx.stub.getTxTimestamp(),
-          updatedAt: ctx.stub.getTxTimestamp(),
+          updatedAt: ctx.stub.getTxTimestamp()
         };
 
         let shipmentBuffer = Buffer.from(JSON.stringify(shipmentObject));
@@ -285,9 +285,46 @@ class PharmaNetContract extends Contract {
     // Verify the buyer is either a retailer or a distributor
     let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
 
-    if(ctxHierarchy===4){
-      
-    }else{
+    if (ctxHierarchy === 4) {
+      let shipmentKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
+      let shipmentBuffer = ctx.stub.getState(shipmentKey);
+      let shipmentObject = JSON.parse(shipmentBuffer.toString());
+
+      let txnMSPID = ctx.clientIdentity.getMSPID();
+
+      let currentOwner = "";
+      if (txnMSPID.trim() === "DistributorMSP") {
+        currentOwner = "Distributor";
+      } else {
+        currentOwner = "Consumer";
+      }
+
+
+      shipmentObject.status="Delivered";
+      shipmentObject.updatedAt=ctx.stub.getTxTimestamp();
+      shipmentObject.owner=currentOwner;
+
+
+      let drugName=shipmentObject.drugName;
+
+      let drugSerialNo=shipmentObject.assets;
+
+      for(let item of drugSerialNo){
+        let drugKey=ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + item]);
+        let drugBuffer=ctx.stub.getState(drugKey);
+        let drugObject=JSON.parse(drugBuffer.toString());
+
+        drugObject.shipment=shipmentKey;
+
+        //Update the ledger
+        let updatedDrugBuffer=Buffer.from(drugObject.toString());
+        ctx.stub.putState(drugKey, updatedDrugBuffer);
+      }
+
+      let updatedShipmentBuffer=Buffer.from(shipmentObject.toString());
+      ctx.stub.putState(shipmentKey,updatedShipmentBuffer);
+
+    } else {
       console.log("Shipment can only be updated by the tranporter");
     }
   }
