@@ -32,6 +32,8 @@ class PharmaNetContract extends Contract {
       hKey = 2;
     } else if (txnMSPID.trim() === "RetailerMSP") {
       hKey = 3;
+    } else if (txnMSPID.trim() === "TransporterMSP") {
+      hKey = 4;
     }
 
     return hKey;
@@ -50,7 +52,7 @@ class PharmaNetContract extends Contract {
     let hierarchyKey = this.getCompnayHierarchyKey(ctx);
 
     if (hierarchyKey > 0) {
-      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [companyName + "-" + companyCRN]);
+      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [companyCRN]);
 
       let companyDetails = {
         companyID: companyCRN,
@@ -141,6 +143,8 @@ class PharmaNetContract extends Contract {
       quantity: quantity,
       buyer: buyer,
       seller: seller,
+      createdAt: ctx.stub.getTxTimestamp(),
+      updatedAt: ctx.stub.getTxTimestamp(),
     };
 
     return poDetails;
@@ -160,7 +164,7 @@ class PharmaNetContract extends Contract {
     let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
 
     //  PO : Retailer => Distributor
-    if (ctxHierarchy === 3) {
+    if (ctxHierarchy === 3 || ctxHierarchy === 2) {
       let buyerKey = ctx.stub.createCompositeKey("pharmanet.company", [buyerCRN]);
       let selletKey = ctx.stub.createCompositeKey("pharmanet.company", [sellerCRN]);
 
@@ -175,16 +179,18 @@ class PharmaNetContract extends Contract {
           let buyerObject = JSON.parse(buyerBuffer.toString());
           let sellerObject = JSON.parse(sellerBuffer.toString());
 
-          if (buyerObject.organisationRole === "Retailer" && sellerObject.organisationRole === "Distributor" || buyerObject.organisationRole === "Distributor" && sellerObject.organisationRole === "Manufacturer") {
+          if (
+            (buyerObject.organisationRole === "Retailer" && sellerObject.organisationRole === "Distributor") ||
+            (buyerObject.organisationRole === "Distributor" && sellerObject.organisationRole === "Manufacturer")
+          ) {
             let buyerName = buyerObject.name;
 
-            let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [buyerName + "-" + drugName]);
+            let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [buyerCRN + "-" + drugName]);
 
             let po = this.generatePOModel(poKey, drugName, quantity, buyerCRN, sellerCRN);
             let poBuffer = Buffer.from(JSON.stringify(po));
             await ctx.stub.putState(poKey, poBuffer);
-
-          } else{
+          } else {
             console.log("The buyer and seller are not matchig the criteria");
           }
           return po;
@@ -194,6 +200,95 @@ class PharmaNetContract extends Contract {
       } catch (err) {
         console.log("Failer to get Buyer or Seller Keys." + err);
       }
+    }
+  }
+
+  /**
+   * @description This function is used to create a shipment
+   * @param {*} ctx The transaction context object
+   * @param {*} buyerCRN CRN of the Company who is rasing the PO
+   * @param {*} drugName Name of the Drug
+   * @param {*} listOfAssets Drug serial numbers
+   * @param {*} transporterCRN Details of the transporter
+   */
+
+  async createShipment(ctx, buyerCRN, drugName, listOfAssets, transporterCRN) {
+    try {
+      // Verify the buyer is either a retailer or a distributor
+      let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
+
+      if (ctxHierarchy === 1 || ctxHierarchy === 2) {
+        // Create the PO Key
+        let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [buyerCRN + "-" + drugName]);
+        let poBuffer = Buffer.from(JSON.stringify(poKey));
+        let poDetails = JSON.parse(poBuffer.toString());
+
+        let totalPOItems = poDetails.quantity;
+        let totalItemsReceived = listOfAssets.split(",");
+
+        let totalAssets = [];
+        if (totalPOItems === totalItemsReceived) {
+          for (let items of listOfAssets) {
+            let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
+            totalAssets.push(drugKey);
+          }
+        } else {
+          console.log("Quantity requested does not match the quantity provided");
+        }
+
+        //Create Shipment Details
+        let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [buyerCRN + "-" + drugName]);
+        let transporterKey = ctx.stub.createCompositeKey("pharmanet.transporter", [transporterCRN]);
+
+        let shipmentObject = {
+          shipmentID: shipmentKey,
+          creator: ctx.getID(),
+          assets: totalAssets,
+          transporter: transporterKey,
+          status: "in-transit",
+          createdAt: ctx.stub.getTxTimestamp(),
+          updatedAt: ctx.stub.getTxTimestamp(),
+        };
+
+        let shipmentBuffer = Buffer.from(JSON.stringify(shipmentObject));
+        ctx.stub.putState(shipmentKey, shipmentBuffer);
+
+        //Update the Owner of the drug
+        for (let items of listOfAssets) {
+          // Update owner
+          let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
+          let drugBuffer = ctx.stub.getState(drugKey);
+          let drugObject = JSON.parse(drugBuffer.toString());
+          drugObject.owner = transporterKey;
+
+          // Update in the ledger
+          let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
+          ctx.stub.putState(drugKey, updatedDrugBuffer);
+        }
+      } else {
+        console.log("User is not allowed to create shipment");
+      }
+    } catch (err) {
+      console.log("Error in create shipment : " + err);
+    }
+  }
+
+  /**
+   * @description This function is used to update a shipment
+   * @param {*} ctx The transaction context object
+   * @param {*} buyerCRN CRN of the Company who is rasing the PO
+   * @param {*} drugName Name of the Drug
+   * @param {*} transporterCRN Details of the transporter
+   */
+
+  async updateShipment(ctx, buyerCRN, drugName, transporterCRN) {
+    // Verify the buyer is either a retailer or a distributor
+    let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
+
+    if(ctxHierarchy===4){
+      
+    }else{
+      console.log("Shipment can only be updated by the tranporter");
     }
   }
 }
