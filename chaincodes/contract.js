@@ -16,12 +16,36 @@ class PharmaNetContract extends Contract {
     console.log("PharmaNetContract Chaincode was successfully deployed");
   }
 
+  // =============================================== Utils Functions ===============================================
+
+  getCompanyDbKey(companyCRN, companyName) {
+    let key = companyCRN + "-" + companyName;
+    return key;
+  }
+
+  getDrugDBKey(drugName, serialNo) {
+    let key = drugName + "-" + serialNo;
+    return key;
+  }
+
+  getpoDBKey(buyerCRN, drugName) {
+    let key = buyerCRN + "-" + drugName;
+    return key;
+  }
+
+  getShipmentKey(buyerCRN, drugName) {
+    let key = buyerCRN + "-" + drugName;
+    return key;
+  }
+
+  // =============================================== Utils Functions End ===============================================
+
   /**
    * @description This function find the Hierarchy key and return the value. If the value remains as 0 then, it will be an unauthorised access
    * @param {*} ctx The transaction context object
    */
 
-  getCompnayHierarchyKey(txnContext) {
+  getCompanyHierarchyKey(txnContext) {
     let txnMSPID = txnContext.clientIdentity.getMSPID();
 
     let hKey = 0;
@@ -34,6 +58,8 @@ class PharmaNetContract extends Contract {
       hKey = 3;
     } else if (txnMSPID.trim() === "TransporterMSP") {
       hKey = 4;
+    } else if (txnMSPID.trim() === "ConsumerMSP") {
+      hKey = 5;
     }
 
     return hKey;
@@ -49,13 +75,14 @@ class PharmaNetContract extends Contract {
    */
 
   async registerCompany(ctx, companyCRN, companyName, Location, organisationRole) {
-    let hierarchyKey = this.getCompnayHierarchyKey(ctx);
+    let hierarchyKey = this.getCompanyHierarchyKey(ctx);
 
     if (hierarchyKey > 0) {
-      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [companyCRN]);
+      let companyDBKey = this.getCompanyDbKey(companyCRN, companyName);
+      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [companyDBKey]);
 
       let companyDetails = {
-        companyID: companyCRN,
+        companyID: companyDBKey,
         name: companyName,
         location: Location,
         organisationRole: organisationRole,
@@ -87,7 +114,7 @@ class PharmaNetContract extends Contract {
     // Check if the transaction is being performed by the manufacturer
 
     // getting the transaction hierarchy
-    let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
+    let ctxHierarchy = this.getCompanyHierarchyKey(ctx);
 
     if (ctxHierarchy === 1) {
       // Check if the company is registered in the netwokr
@@ -98,31 +125,39 @@ class PharmaNetContract extends Contract {
           let companyObject = JSON.parse(companyDetailsBuffer.toString());
 
           // Check if the company has role of manufacturer
-          if (companyObject.organisationRole === "manufacturer") {
+          if (companyObject.organisationRole.toUpperCase() === "MANUFACTURER") {
             // Generate drug Key
-            let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + serialNo]);
+            let drugDBKey = this.getDrugDBKey(drugName, serialNo);
+            let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
 
             //Create drug Object
             let drugDetails = {
-              productID: drugKey,
+              productID: drugDBKey,
               name: drugName,
-              manufacturer: companyKey,
+              manufacturer: companyCRN,
               manufacturingDate: mfgDate,
               expiryDate: expDate,
-              owner: companyKey,
+              owner: companyCRN,
               shipment: "",
               createdAt: ctx.stub.getTxTimestamp(),
               updatedAt: ctx.stub.getTxTimestamp(),
             };
 
+            console.log("===================================" + drugDetails);
             let drugBuffer = Buffer.from(JSON.stringify(drugDetails));
-            await ctx.stub.putState(drugKey, drugDetails);
+            await ctx.stub.putState(drugKey, drugBuffer);
             return drugDetails;
+          }else{
+            console.log("=================================== Organisation Role Did not match");
           }
+        } else {
+          console.log("=================================== Issue with Company details Buffer");
         }
       } catch (err) {
         console.log("Error in adding drug" + err);
       }
+    } else {
+      return "Error in adding drug. Hierarchy does not match";
     }
   }
 
@@ -135,20 +170,12 @@ class PharmaNetContract extends Contract {
    * @param {*} seller Stores the composite key of the seller of the drugs.
    */
 
-  generatePOModel(poID, drugName, quantity, buyer, seller) {
-    // Create and return PO Model
-    let poDetails = {
-      poID: poID,
-      drugName: drugName,
-      quantity: quantity,
-      buyer: buyer,
-      seller: seller,
-      createdAt: ctx.stub.getTxTimestamp(),
-      updatedAt: ctx.stub.getTxTimestamp(),
-    };
+  // generatePOModel(poID, drugName, quantity, buyer, seller) {
+  //   // Create and return PO Model
 
-    return poDetails;
-  }
+
+  //   return poDetails;
+  // }
 
   /**
    * @description This function is used to create a Purchase Order (PO) to buy drugs, by companies belonging to ‘Distributor’ or ‘Retailer’ organisation.
@@ -161,7 +188,7 @@ class PharmaNetContract extends Contract {
 
   async createPO(ctx, buyerCRN, sellerCRN, drugName, quantity) {
     // Check if the transaction is being performed by the Distributor or Retailer
-    let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
+    let ctxHierarchy = this.getCompanyHierarchyKey(ctx);
 
     //  PO : Retailer => Distributor
     if (ctxHierarchy === 3 || ctxHierarchy === 2) {
@@ -180,16 +207,26 @@ class PharmaNetContract extends Contract {
           let sellerObject = JSON.parse(sellerBuffer.toString());
 
           if (
-            (buyerObject.organisationRole === "Retailer" && sellerObject.organisationRole === "Distributor") ||
-            (buyerObject.organisationRole === "Distributor" && sellerObject.organisationRole === "Manufacturer")
+            (buyerObject.organisationRole.toUpperCase() === "RETAILER" && sellerObject.organisationRole.toUpperCase() === "DISTRIBUTOR") ||
+            (buyerObject.organisationRole.toUpperCase() === "DISTRIBUTOR" && sellerObject.organisationRole.toUpperCase() === "MANUFACTURER")
           ) {
-            let buyerName = buyerObject.name;
+            // let buyerName = buyerObject.name;
+            let poDBKey = this.getpoDBKey(buyerCRN, drugName);
+            let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [poDBKey]);
 
-            let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [buyerCRN + "-" + drugName]);
-
-            let po = this.generatePOModel(poKey, drugName, quantity, buyerCRN, sellerCRN);
-            let poBuffer = Buffer.from(JSON.stringify(po));
+            // let po = this.generatePOModel(ctx,poDBKey, drugName, quantity, buyerCRN, sellerCRN);
+            let poDetails = {
+              poID: poDBKey,
+              drugName: drugName,
+              quantity: quantity,
+              buyer: buyerCRN,
+              seller: sellerCRN,
+              createdAt: ctx.stub.getTxTimestamp(),
+              updatedAt: ctx.stub.getTxTimestamp(),
+            };
+            let poBuffer = Buffer.from(JSON.stringify(poDetails));
             await ctx.stub.putState(poKey, poBuffer);
+            return poDetails;
           } else {
             console.log("The buyer and seller are not matchig the criteria");
           }
@@ -198,8 +235,10 @@ class PharmaNetContract extends Contract {
           console.log("The Buyer Or Seller are not registered in the system");
         }
       } catch (err) {
-        console.log("Failer to get Buyer or Seller Keys." + err);
+        console.log("Failed to get Buyer or Seller Keys." + err);
       }
+    }else{
+      return "Error in creating PO. Hierarchy does not match";
     }
   }
 
@@ -215,39 +254,54 @@ class PharmaNetContract extends Contract {
   async createShipment(ctx, buyerCRN, drugName, listOfAssets, transporterCRN) {
     try {
       // Verify the buyer is either a retailer or a distributor
-      let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
-
+      let ctxHierarchy = this.getCompanyHierarchyKey(ctx);
+      listOfAssets=JSON.parse(listOfAssets);
       if (ctxHierarchy === 1 || ctxHierarchy === 2) {
         // Create the PO Key
-        let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [buyerCRN + "-" + drugName]);
-        let poBuffer = Buffer.from(JSON.stringify(poKey));
+        let poDBKey = this.getpoDBKey(buyerCRN, drugName);
+        let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [poDBKey]);
+        let poBuffer = await ctx.stub.getState(poKey);
         let poDetails = JSON.parse(poBuffer.toString());
-
+        console.log("PODetails : " + poDetails);
         let totalPOItems = poDetails.quantity;
-        let totalItemsReceived = listOfAssets.split(",");
+        console.log("Purchase Quantity in PO is : " + totalPOItems);
+        // console.log("Type Of Purchase Quantity in PO is : " + typeof totalPOItems);
+        
+        let totalItemsReceived=0;
+
+        if(Array.isArray(listOfAssets)){
+          totalItemsReceived=listOfAssets.length;
+          console.log("totalItemsReceived : " + totalItemsReceived);
+        }else{
+          return "Received value is not an array";
+        }
+        
 
         let totalAssets = [];
-        if (totalPOItems === totalItemsReceived) {
+        if (parseInt(totalPOItems) === parseInt(totalItemsReceived)) {
           for (let items of listOfAssets) {
-            let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
-            totalAssets.push(drugKey);
+            let drugDBKey = this.getDrugDBKey(drugName, items);
+            // let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
+            totalAssets.push(drugDBKey);
           }
         } else {
-          console.log("Quantity requested does not match the quantity provided");
+          return "Quantity requested does not match the quantity provided";
         }
 
         //Create Shipment Details
-        let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [buyerCRN + "-" + drugName]);
-        let transporterKey = ctx.stub.createCompositeKey("pharmanet.transporter", [transporterCRN]);
+        let shipmentDBKey = this.getShipmentKey(buyerCRN, drugName);
+        let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [shipmentDBKey]);
+
+        // let transporterKey = ctx.stub.createCompositeKey("pharmanet.transporter", [transporterCRN]);
 
         let shipmentObject = {
-          shipmentID: shipmentKey,
-          creator: ctx.getID(),
+          shipmentID: shipmentDBKey,
+          creator: ctx.clientIdentity.getX509Certificate(),
           assets: totalAssets,
-          transporter: transporterKey,
+          transporter: transporterCRN,
           status: "in-transit",
           createdAt: ctx.stub.getTxTimestamp(),
-          updatedAt: ctx.stub.getTxTimestamp()
+          updatedAt: ctx.stub.getTxTimestamp(),
         };
 
         let shipmentBuffer = Buffer.from(JSON.stringify(shipmentObject));
@@ -256,15 +310,17 @@ class PharmaNetContract extends Contract {
         //Update the Owner of the drug
         for (let items of listOfAssets) {
           // Update owner
-          let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
+          let drugDBKey = this.getDrugDBKey(drugName, items);
+          let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
           let drugBuffer = ctx.stub.getState(drugKey);
           let drugObject = JSON.parse(drugBuffer.toString());
-          drugObject.owner = transporterKey;
+          drugObject.owner = transporterCRN;
 
           // Update in the ledger
           let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
           ctx.stub.putState(drugKey, updatedDrugBuffer);
         }
+        return shipmentObject;
       } else {
         console.log("User is not allowed to create shipment");
       }
@@ -283,50 +339,140 @@ class PharmaNetContract extends Contract {
 
   async updateShipment(ctx, buyerCRN, drugName, transporterCRN) {
     // Verify the buyer is either a retailer or a distributor
-    let ctxHierarchy = this.getCompnayHierarchyKey(ctx);
+    let ctxHierarchy = this.getCompanyHierarchyKey(ctx);
 
     if (ctxHierarchy === 4) {
-      let shipmentKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + items]);
+      let shipmentDBKey = this.getShipmentKey(buyerCRN, drugName);
+      let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [shipmentDBKey]);
       let shipmentBuffer = ctx.stub.getState(shipmentKey);
       let shipmentObject = JSON.parse(shipmentBuffer.toString());
 
-      let txnMSPID = ctx.clientIdentity.getMSPID();
-
+      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [buyerCRN]);
+      let companyBuffer = ctx.stub.getState(companyKey);
+      let companyObject = JSON.parse(companyBuffer.toString());
       let currentOwner = "";
-      if (txnMSPID.trim() === "DistributorMSP") {
-        currentOwner = "Distributor";
-      } else {
-        currentOwner = "Consumer";
+
+      if (companyObject.organisationRole === "Distributor" || companyObject.organisationRole === "Retailer") {
+        currentOwner = buyerCRN;
       }
 
+      shipmentObject.status = "Delivered";
+      shipmentObject.updatedAt = ctx.stub.getTxTimestamp();
+      shipmentObject.owner = currentOwner;
 
-      shipmentObject.status="Delivered";
-      shipmentObject.updatedAt=ctx.stub.getTxTimestamp();
-      shipmentObject.owner=currentOwner;
+      let drugName = shipmentObject.drugName;
 
+      let drugSerialNo = shipmentObject.assets;
 
-      let drugName=shipmentObject.drugName;
+      for (let item of drugSerialNo) {
+        let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [item]);
+        let drugBuffer = ctx.stub.getState(drugKey);
+        let drugObject = JSON.parse(drugBuffer.toString());
 
-      let drugSerialNo=shipmentObject.assets;
-
-      for(let item of drugSerialNo){
-        let drugKey=ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + item]);
-        let drugBuffer=ctx.stub.getState(drugKey);
-        let drugObject=JSON.parse(drugBuffer.toString());
-
-        drugObject.shipment=shipmentKey;
+        drugObject.shipment = shipmentKey;
 
         //Update the ledger
-        let updatedDrugBuffer=Buffer.from(drugObject.toString());
+        let updatedDrugBuffer = Buffer.from(drugObject.toString());
         ctx.stub.putState(drugKey, updatedDrugBuffer);
       }
 
-      let updatedShipmentBuffer=Buffer.from(shipmentObject.toString());
-      ctx.stub.putState(shipmentKey,updatedShipmentBuffer);
-
+      let updatedShipmentBuffer = Buffer.from(shipmentObject.toString());
+      ctx.stub.putState(shipmentKey, updatedShipmentBuffer);
     } else {
       console.log("Shipment can only be updated by the tranporter");
     }
+  }
+
+  /**
+   * @description This function is used to sell the durg to the consumer
+   * @param {*} ctx The transaction context object
+   * @param {*} drugName Name of the Drug
+   * @param {*} serialNo SerailNo of the Drug
+   * @param {*} retailerCRN SerailNo of the Drug
+   * @param {*} customerAadhar SerailNo of the Drug
+   */
+
+  async retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar) {
+    let hierarchyKey = this.getCompanyHierarchyKey(ctx);
+
+    if (hierarchyKey === 5) {
+      let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + serialNo]);
+      let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => console.log(err));
+      let drugDetails = JSON.parse(drugBuffer.toString());
+
+      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [retailerCRN]);
+
+      if (drugDetails.owner === companyKey) {
+        drugDetails.owner = customerAadhar;
+
+        let updatedDrugBuffer = Buffer.from(JSON.stringify(drugDetails));
+        await ctx.stub.putState(drugKey, updatedDrugBuffer);
+
+        return drugDetails;
+      }
+    } else {
+      console.log("User does not have the right to sell drug to consumer");
+    }
+  }
+
+  /**
+   * @description This function is used view the History of the DRUG
+   * @param {*} ctx The transaction context object
+   * @param {*} drugName Name of the Drug
+   * @param {*} serialNo SerailNo of the Drug
+   */
+
+  async viewHistory(ctx, drugName, serialNo) {
+    let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + serialNo]);
+
+    let allDrugDetails = await ctx.stub.getHistoryForKey(drugKey);
+    console.log("=============== All Drug Details :" + allDrugDetails);
+    let allDurgResult = [];
+
+    let res = await allDrugDetails.next();
+
+    //Iterate till res.done becomes false
+    while (res.done) {
+      console.log("=============== res.value = " + res.value);
+      console.log("=============== res.value.value = " + res.value.value);
+      console.log("=============== res.value.value.toString('utf8') = " + res.value.vlue.toString("utf8"));
+
+      let jsonResponse = {};
+
+      jsonResponse.txID = res.value.tx_id;
+      jsonResponse.Timestamp = res.value.timestamp;
+      jsonResponse.IsDelete = res.value.is_delete.toString();
+
+      try {
+        jsonResponse.Value = JSON.parse(res.value.value.toString("utf8"));
+      } catch (err) {
+        console.log(err);
+        jsonResponse.Value = res.value.value.toString("utf8");
+      }
+
+      allDurgResult.push(jsonResponse);
+    }
+
+    await NodeIterator.close();
+    return allDurgResult;
+  }
+
+  /**
+   * @description This function is used view the current state of the DRUG
+   * @param {*} ctx The transaction context object
+   * @param {*} drugName Name of the Drug
+   * @param {*} serialNo SerailNo of the Drug
+   */
+
+  async viewDrugCurrentState(ctx, drugName, serialNo) {
+    let drugDBKey = this.getDrugDBKey(drugName, serialNo);
+    console.log("******" + drugDBKey);
+    let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
+    console.log(drugKey);
+    let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => console.log(err));
+    let drugDetails = JSON.parse(drugBuffer.toString());
+
+    return drugDetails;
   }
 }
 

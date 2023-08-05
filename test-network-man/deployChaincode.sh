@@ -168,6 +168,6 @@ peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"Args
 
 sleep 5
 
-peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"registerCompany","Args":["1","testCompany","Mars","1"]}' --cafile $ORDERER_CA
+# peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"registerCompany","Args":["MAN001","Sun Pharma","Chennai","1"]}' --cafile $ORDERER_CA
 
-peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"getRegisterCompany","Args":["1"]}' --cafile $ORDERER_CA
+# peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"getRegisterCompany","Args":["1"]}' --cafile $ORDERER_CA
