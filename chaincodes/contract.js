@@ -147,7 +147,7 @@ class PharmaNetContract extends Contract {
             let drugBuffer = Buffer.from(JSON.stringify(drugDetails));
             await ctx.stub.putState(drugKey, drugBuffer);
             return drugDetails;
-          }else{
+          } else {
             console.log("=================================== Organisation Role Did not match");
           }
         } else {
@@ -172,7 +172,6 @@ class PharmaNetContract extends Contract {
 
   // generatePOModel(poID, drugName, quantity, buyer, seller) {
   //   // Create and return PO Model
-
 
   //   return poDetails;
   // }
@@ -237,7 +236,7 @@ class PharmaNetContract extends Contract {
       } catch (err) {
         console.log("Failed to get Buyer or Seller Keys." + err);
       }
-    }else{
+    } else {
       return "Error in creating PO. Hierarchy does not match";
     }
   }
@@ -255,7 +254,7 @@ class PharmaNetContract extends Contract {
     try {
       // Verify the buyer is either a retailer or a distributor
       let ctxHierarchy = this.getCompanyHierarchyKey(ctx);
-      listOfAssets=JSON.parse(listOfAssets);
+      listOfAssets = JSON.parse(listOfAssets);
       if (ctxHierarchy === 1 || ctxHierarchy === 2) {
         // Create the PO Key
         let poDBKey = this.getpoDBKey(buyerCRN, drugName);
@@ -264,15 +263,14 @@ class PharmaNetContract extends Contract {
         let poDetails = JSON.parse(poBuffer.toString());
         let totalPOItems = poDetails.quantity;
         // console.log("Type Of Purchase Quantity in PO is : " + typeof totalPOItems);
-        
-        let totalItemsReceived=0;
 
-        if(Array.isArray(listOfAssets)){
-          totalItemsReceived=listOfAssets.length;
-        }else{
+        let totalItemsReceived = 0;
+
+        if (Array.isArray(listOfAssets)) {
+          totalItemsReceived = listOfAssets.length;
+        } else {
           return "Received value is not an array";
         }
-        
 
         let totalAssets = [];
         if (parseInt(totalPOItems) === parseInt(totalItemsReceived)) {
@@ -340,37 +338,42 @@ class PharmaNetContract extends Contract {
       let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [shipmentDBKey]);
       let shipmentBuffer = await ctx.stub.getState(shipmentKey);
       let shipmentObject = JSON.parse(shipmentBuffer.toString());
-      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [buyerCRN]);
-      let companyBuffer = await ctx.stub.getState(companyKey);
-      let companyObject = JSON.parse(companyBuffer.toString());
-      let currentOwner = "";
-      if (companyObject.organisationRole.toUpperCase() === "DISTRIBUTOR" || companyObject.organisationRole.toUpperCase() === "Retailer") {
-        currentOwner = buyerCRN;
+
+      if (shipmentObject.transporter.toUpperCase() === transporterCRN.toUpperCase()) {
+        let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [buyerCRN]);
+        let companyBuffer = await ctx.stub.getState(companyKey);
+        let companyObject = JSON.parse(companyBuffer.toString());
+        let currentOwner = "";
+
+        if (companyObject.organisationRole.toUpperCase() === "DISTRIBUTOR" || companyObject.organisationRole.toUpperCase() === "RETAILER") {
+          currentOwner = buyerCRN;
+        }
+        shipmentObject.status = "Delivered";
+        shipmentObject.updatedAt = ctx.stub.getTxTimestamp();
+        // let drugName = shipmentObject.drugName;
+
+        let drugSerialNo = shipmentObject.assets;
+
+        for (let item of drugSerialNo) {
+          let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [item]);
+          let drugBuffer = await ctx.stub.getState(drugKey);
+          let drugObject = JSON.parse(drugBuffer.toString());
+          drugObject.shipment = shipmentKey;
+          drugObject.owner=currentOwner;
+          console.log(JSON.stringify(drugObject));
+          //Update the ledger
+          let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
+          await ctx.stub.putState(drugKey, updatedDrugBuffer);
+        }
+
+        let updatedShipmentBuffer = Buffer.from(JSON.stringify(shipmentObject));
+        await ctx.stub.putState(shipmentKey, updatedShipmentBuffer);
+        return shipmentObject;
+      } else {
+        return "Tranporter CRN does not match with the Shipment CRN";
       }
-      shipmentObject.status = "Delivered";
-      shipmentObject.updatedAt = ctx.stub.getTxTimestamp();
-      shipmentObject.owner = currentOwner;
-      // let drugName = shipmentObject.drugName;
-
-      let drugSerialNo = shipmentObject.assets;
-
-      for (let item of drugSerialNo) {
-
-        let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [item]);
-        let drugBuffer = await ctx.stub.getState(drugKey);
-        let drugObject = JSON.parse(drugBuffer.toString());
-        drugObject.shipment = shipmentKey;
-
-        //Update the ledger
-        let updatedDrugBuffer = Buffer.from(drugObject.toString());
-        await ctx.stub.putState(drugKey, updatedDrugBuffer);
-      }
-
-      let updatedShipmentBuffer = Buffer.from(shipmentObject.toString());
-      await ctx.stub.putState(shipmentKey, updatedShipmentBuffer);
-      return shipmentObject;
     } else {
-      console.log("Shipment can only be updated by the tranporter");
+      return "Shipment can only be updated by the tranporter";
     }
   }
 
