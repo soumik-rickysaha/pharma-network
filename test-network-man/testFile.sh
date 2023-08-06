@@ -63,6 +63,8 @@ sleep 2
 echo '================ View Drug Current state ================'
 peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
+echo '================ Part A ================'
+
 echo '================ Create PO ================'
 export CORE_PEER_LOCALMSPID="DistributorMSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer0.Distributor.pharma-network.com/tls/ca.crt
@@ -96,51 +98,58 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporte
 export CORE_PEER_ADDRESS=localhost:15051
 peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"updateShipment","Args":["DIST001-VG Pharma","Paracetamol","TRA001-FedEx"]}' --cafile $ORDERER_CA
 
-sleep 5
+sleep 2
 echo '================ View Drug Current state ================'
 peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer1.Manufacturer.pharma-network.com/tls/ca.crt
-# export CORE_PEER_ADDRESS=localhost:12051
+echo '================ Part B ================'
 
-# sleep 5
+echo '================ Create PO ================'
+export CORE_PEER_LOCALMSPID="DistributorMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer0.Distributor.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/users/Admin@Distributor.pharma-network.com/msp
+export CORE_PEER_ADDRESS=localhost:9051
 
-# echo    '================ Deploying the chancode on peer0 of Consumer ================'
-# export CORE_PEER_LOCALMSPID="ConsumerMSP"
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt
-# export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/users/Admin@Consumer.pharma-network.com/msp
-# export CORE_PEER_ADDRESS=localhost:7051
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"createPO","Args":["RET002-Upgrad","DIST001-VG Pharma","Paracetamol","2"]}' --cafile $ORDERER_CA
 
-# sleep 5
+sleep 2
+echo '================ View Drug Current state ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
-# echo    '================ Deploying the chancode on peer1 of Consumer ================'
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Consumer.pharma-network.com/peers/peer0.Consumer.pharma-network.com/tls/ca.crt
-# export CORE_PEER_ADDRESS=localhost:8051
+sleep 2
 
-# sleep 5
+echo '================ Create Shipment ================'
+export CORE_PEER_LOCALMSPID="ManufacturerMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer0.Manufacturer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp
+export CORE_PEER_ADDRESS=localhost:11051
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"createShipment","Args":["RET002-Upgrad","Paracetamol","[\"001\",\"002\"]","TRA002-Blue Dart"]}' --cafile $ORDERER_CA
 
-# sleep 5
+sleep 2
+echo '================ View Drug Current state ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
-# echo    '================ Deploying the chancode on peer1 of Distributor ================'
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Distributor.pharma-network.com/peers/peer1.Distributor.pharma-network.com/tls/ca.crt
-# export CORE_PEER_ADDRESS=localhost:10051
+sleep 2
+echo '================ Update Shipment ================'
+export CORE_PEER_LOCALMSPID="TransporterMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer0.Transporter.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp
+export CORE_PEER_ADDRESS=localhost:15051
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"updateShipment","Args":["RET002-Upgrad","Paracetamol","TRA002-Blue Dart"]}' --cafile $ORDERER_CA
 
-# sleep 5
+sleep 2
+echo '================ View Drug Current state ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
-# sleep 5
+sleep 2
+echo '================ Retail Drug ================'
+export CORE_PEER_LOCALMSPID="RetailerMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer0.Retailer.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/users/Admin@Retailer.pharma-network.com/msp
+export CORE_PEER_ADDRESS=localhost:13051
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"retailDrug","Args":["Paracetamol","001","RET002-Upgrad","AAD001"]}' --cafile $ORDERER_CA
 
-# echo    '================ Deploying the chancode on peer1 of Retailer ================'
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Retailer.pharma-network.com/peers/peer1.Retailer.pharma-network.com/tls/ca.crt
-# export CORE_PEER_ADDRESS=localhost:14051
+sleep 2
+echo '================ View Drug Current state ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
-# sleep 5
-
-# sleep 5
-
-# echo    '================ Deploying the chancode on peer1 of Transporter ================'
-# export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer1.Transporter.pharma-network.com/tls/ca.crt
-# export CORE_PEER_ADDRESS=localhost:16051
-
-# peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"createShipment","Args":["DIST001","Paracetamol","[111,222,333]","TRA002"]}' --cafile $ORDERER_CA
-
-# peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"viewHistory","Args":["Paracetamol","1"]}' --cafile $ORDERER_CA

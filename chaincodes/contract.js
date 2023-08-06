@@ -360,7 +360,7 @@ class PharmaNetContract extends Contract {
           let drugObject = JSON.parse(drugBuffer.toString());
           drugObject.shipment = shipmentKey;
           drugObject.owner=currentOwner;
-          console.log(JSON.stringify(drugObject));
+          // console.log(JSON.stringify(drugObject));
           //Update the ledger
           let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
           await ctx.stub.putState(drugKey, updatedDrugBuffer);
@@ -389,14 +389,15 @@ class PharmaNetContract extends Contract {
   async retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar) {
     let hierarchyKey = this.getCompanyHierarchyKey(ctx);
 
-    if (hierarchyKey === 5) {
-      let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + serialNo]);
+    if (hierarchyKey === 3) {
+      let drugDBKey = this.getDrugDBKey(drugName, serialNo);
+      let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
       let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => console.log(err));
       let drugDetails = JSON.parse(drugBuffer.toString());
+      console.log(JSON.stringify(drugDetails));s
+      // let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [retailerCRN]);
 
-      let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [retailerCRN]);
-
-      if (drugDetails.owner === companyKey) {
+      if (drugDetails.owner === retailerCRN) {
         drugDetails.owner = customerAadhar;
 
         let updatedDrugBuffer = Buffer.from(JSON.stringify(drugDetails));
@@ -405,7 +406,7 @@ class PharmaNetContract extends Contract {
         return drugDetails;
       }
     } else {
-      console.log("User does not have the right to sell drug to consumer");
+      return "User does not have the right to sell drug to consumer";
     }
   }
 
