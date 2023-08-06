@@ -78,9 +78,17 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Manufactur
 export CORE_PEER_ADDRESS=localhost:11051
 peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"createShipment","Args":["DIST001-VG Pharma","Paracetamol","[\"001\",\"002\"]","TRA001-FedEx"]}' --cafile $ORDERER_CA
 
+sleep 2
+echo    '================ Update Shipment ================'
+export CORE_PEER_LOCALMSPID="TransporterMSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/peers/peer0.Transporter.pharma-network.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp
+export CORE_PEER_ADDRESS=localhost:15051
+peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"updateShipment","Args":["DIST001-VG Pharma","Paracetamol","TRA001-FedEx"]}' --cafile $ORDERER_CA
 
-# echo    '================ View Drug Current state ================'
-# peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
+sleep 2
+echo    '================ View Drug Current state ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
 
 # export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/Manufacturer.pharma-network.com/peers/peer1.Manufacturer.pharma-network.com/tls/ca.crt
@@ -140,7 +148,7 @@ peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"func
 
 
 # peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"createShipment","Args":["DIST001","Paracetamol","[111,222,333]","TRA002"]}' --cafile $ORDERER_CA
-# peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"updateShipment","Args":["DIST001","Paracetamol","TRA002"]}' --cafile $ORDERER_CA
+
 # peer chaincode invoke -o localhost:7050 -C pharmachannel -n pharmanet -c '{"function":"viewHistory","Args":["Paracetamol","1"]}' --cafile $ORDERER_CA
 
 

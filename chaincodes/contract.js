@@ -262,16 +262,13 @@ class PharmaNetContract extends Contract {
         let poKey = ctx.stub.createCompositeKey("pharmanet.PurchaseOrders", [poDBKey]);
         let poBuffer = await ctx.stub.getState(poKey);
         let poDetails = JSON.parse(poBuffer.toString());
-        console.log("PODetails : " + poDetails);
         let totalPOItems = poDetails.quantity;
-        console.log("Purchase Quantity in PO is : " + totalPOItems);
         // console.log("Type Of Purchase Quantity in PO is : " + typeof totalPOItems);
         
         let totalItemsReceived=0;
 
         if(Array.isArray(listOfAssets)){
           totalItemsReceived=listOfAssets.length;
-          console.log("totalItemsReceived : " + totalItemsReceived);
         }else{
           return "Received value is not an array";
         }
@@ -291,12 +288,11 @@ class PharmaNetContract extends Contract {
         //Create Shipment Details
         let shipmentDBKey = this.getShipmentKey(buyerCRN, drugName);
         let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [shipmentDBKey]);
-
         // let transporterKey = ctx.stub.createCompositeKey("pharmanet.transporter", [transporterCRN]);
 
         let shipmentObject = {
           shipmentID: shipmentDBKey,
-          creator: ctx.clientIdentity.getX509Certificate(),
+          creator: ctx.clientIdentity.getID(),
           assets: totalAssets,
           transporter: transporterCRN,
           status: "in-transit",
@@ -305,20 +301,18 @@ class PharmaNetContract extends Contract {
         };
 
         let shipmentBuffer = Buffer.from(JSON.stringify(shipmentObject));
-        ctx.stub.putState(shipmentKey, shipmentBuffer);
-
+        await ctx.stub.putState(shipmentKey, shipmentBuffer);
         //Update the Owner of the drug
         for (let items of listOfAssets) {
           // Update owner
           let drugDBKey = this.getDrugDBKey(drugName, items);
           let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
-          let drugBuffer = ctx.stub.getState(drugKey);
+          let drugBuffer = await ctx.stub.getState(drugKey);
           let drugObject = JSON.parse(drugBuffer.toString());
           drugObject.owner = transporterCRN;
-
           // Update in the ledger
           let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
-          ctx.stub.putState(drugKey, updatedDrugBuffer);
+          await ctx.stub.putState(drugKey, updatedDrugBuffer);
         }
         return shipmentObject;
       } else {
@@ -344,40 +338,37 @@ class PharmaNetContract extends Contract {
     if (ctxHierarchy === 4) {
       let shipmentDBKey = this.getShipmentKey(buyerCRN, drugName);
       let shipmentKey = ctx.stub.createCompositeKey("pharmanet.shipment", [shipmentDBKey]);
-      let shipmentBuffer = ctx.stub.getState(shipmentKey);
+      let shipmentBuffer = await ctx.stub.getState(shipmentKey);
       let shipmentObject = JSON.parse(shipmentBuffer.toString());
-
       let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [buyerCRN]);
-      let companyBuffer = ctx.stub.getState(companyKey);
+      let companyBuffer = await ctx.stub.getState(companyKey);
       let companyObject = JSON.parse(companyBuffer.toString());
       let currentOwner = "";
-
-      if (companyObject.organisationRole === "Distributor" || companyObject.organisationRole === "Retailer") {
+      if (companyObject.organisationRole.toUpperCase() === "DISTRIBUTOR" || companyObject.organisationRole.toUpperCase() === "Retailer") {
         currentOwner = buyerCRN;
       }
-
       shipmentObject.status = "Delivered";
       shipmentObject.updatedAt = ctx.stub.getTxTimestamp();
       shipmentObject.owner = currentOwner;
-
-      let drugName = shipmentObject.drugName;
+      // let drugName = shipmentObject.drugName;
 
       let drugSerialNo = shipmentObject.assets;
 
       for (let item of drugSerialNo) {
-        let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [item]);
-        let drugBuffer = ctx.stub.getState(drugKey);
-        let drugObject = JSON.parse(drugBuffer.toString());
 
+        let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [item]);
+        let drugBuffer = await ctx.stub.getState(drugKey);
+        let drugObject = JSON.parse(drugBuffer.toString());
         drugObject.shipment = shipmentKey;
 
         //Update the ledger
         let updatedDrugBuffer = Buffer.from(drugObject.toString());
-        ctx.stub.putState(drugKey, updatedDrugBuffer);
+        await ctx.stub.putState(drugKey, updatedDrugBuffer);
       }
 
       let updatedShipmentBuffer = Buffer.from(shipmentObject.toString());
-      ctx.stub.putState(shipmentKey, updatedShipmentBuffer);
+      await ctx.stub.putState(shipmentKey, updatedShipmentBuffer);
+      return shipmentObject;
     } else {
       console.log("Shipment can only be updated by the tranporter");
     }
