@@ -153,3 +153,7 @@ sleep 2
 echo '================ View Drug Current state ================'
 peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewDrugCurrentState","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
 
+sleep 2
+echo '================ View Drug History ================'
+peer chaincode invoke -o localhost:9051 -C pharmachannel -n pharmanet -c '{"function":"viewHistory","Args":["Paracetamol","001"]}' --cafile $ORDERER_CA
+

@@ -359,7 +359,7 @@ class PharmaNetContract extends Contract {
           let drugBuffer = await ctx.stub.getState(drugKey);
           let drugObject = JSON.parse(drugBuffer.toString());
           drugObject.shipment = shipmentKey;
-          drugObject.owner=currentOwner;
+          drugObject.owner = currentOwner;
           // console.log(JSON.stringify(drugObject));
           //Update the ledger
           let updatedDrugBuffer = Buffer.from(JSON.stringify(drugObject));
@@ -418,38 +418,35 @@ class PharmaNetContract extends Contract {
    */
 
   async viewHistory(ctx, drugName, serialNo) {
-    let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugName + "-" + serialNo]);
+    let drugDBKey = this.getDrugDBKey(drugName, serialNo);
+    let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
 
-    let allDrugDetails = await ctx.stub.getHistoryForKey(drugKey);
-    console.log("=============== All Drug Details :" + allDrugDetails);
+    let drugHistoryIterator = await ctx.stub.getHistoryForKey(drugKey);
     let allDurgResult = [];
 
-    let res = await allDrugDetails.next();
-
-    //Iterate till res.done becomes false
-    while (res.done) {
-      console.log("=============== res.value = " + res.value);
-      console.log("=============== res.value.value = " + res.value.value);
-      console.log("=============== res.value.value.toString('utf8') = " + res.value.vlue.toString("utf8"));
-
-      let jsonResponse = {};
-
-      jsonResponse.txID = res.value.tx_id;
-      jsonResponse.Timestamp = res.value.timestamp;
-      jsonResponse.IsDelete = res.value.is_delete.toString();
-
-      try {
-        jsonResponse.Value = JSON.parse(res.value.value.toString("utf8"));
-      } catch (err) {
-        console.log(err);
-        jsonResponse.Value = res.value.value.toString("utf8");
+    while (true) {
+      let res = await drugHistoryIterator.next();
+      if (res.value && res.value.value.toString()) {
+        // console.log("=============== res.value = " + res.value);
+        // console.log("=============== res.value.value = " + res.value.value.toString());
+        let JSONRes={};
+        JSONRes.Key=res.value.key;
+        try{
+          JSONRes.Record=JSON.parse(res.value.value.toString());
+        }catch(err){
+          console.log(err);
+          JSONRes.Record=res.value.value.toString();
+        }
+        allDurgResult.push(JSONRes);
       }
 
-      allDurgResult.push(jsonResponse);
+      if(res.done){
+        // console.log("End of Data");
+        await drugHistoryIterator.close();
+        // console.log(allDurgResult);
+        return allDurgResult;
+      }
     }
-
-    await NodeIterator.close();
-    return allDurgResult;
   }
 
   /**
@@ -461,9 +458,9 @@ class PharmaNetContract extends Contract {
 
   async viewDrugCurrentState(ctx, drugName, serialNo) {
     let drugDBKey = this.getDrugDBKey(drugName, serialNo);
-    console.log("******" + drugDBKey);
+    // console.log("******" + drugDBKey);
     let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
-    console.log(drugKey);
+    // console.log(drugKey);
     let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => console.log(err));
     let drugDetails = JSON.parse(drugBuffer.toString());
 
