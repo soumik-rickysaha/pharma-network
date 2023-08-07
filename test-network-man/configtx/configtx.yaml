@@ -25,7 +25,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: ../organizations/ordererOrganizations/example.com/msp
+        MSPDir: ../organizations/ordererOrganizations/pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -42,7 +42,7 @@ Organizations:
                 Rule: "OR('OrdererMSP.admin')"
 
         OrdererEndpoints:
-            - orderer.example.com:7050
+            - orderer.pharma-network.com:7050
 
     - &Manufacturer
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -52,7 +52,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: ManufacturerMSP
 
-        MSPDir: ../organizations/peerOrganizations/Manufacturer.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/Manufacturer.pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -71,7 +71,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('ManufacturerMSP.peer')"
         AnchorPeers:
-        - Host: peer0.Manufacturer.example.com
+        - Host: peer0.Manufacturer.pharma-network.com
           Port: 11051
 
     - &Distributor
@@ -82,7 +82,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: DistributorMSP
 
-        MSPDir: ../organizations/peerOrganizations/Distributor.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/Distributor.pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -101,7 +101,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('DistributorMSP.peer')"
         AnchorPeers:
-        - Host: peer0.Distributor.example.com
+        - Host: peer0.Distributor.pharma-network.com
           Port: 9051
     
     - &Consumer
@@ -112,7 +112,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: ConsumerMSP
 
-        MSPDir: ../organizations/peerOrganizations/Consumer.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/Consumer.pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -131,7 +131,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('ConsumerMSP.peer')"
         AnchorPeers:
-        - Host: peer0.Consumer.example.com
+        - Host: peer0.Consumer.pharma-network.com
           Port: 7051                
 
     - &Retailer
@@ -142,7 +142,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: RetailerMSP
 
-        MSPDir: ../organizations/peerOrganizations/Retailer.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/Retailer.pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -161,7 +161,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('RetailerMSP.peer')"
         AnchorPeers:
-        - Host: peer0.Retailer.example.com
+        - Host: peer0.Retailer.pharma-network.com
           Port: 13051                
 
     - &Transporter
@@ -172,7 +172,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: TransporterMSP
 
-        MSPDir: ../organizations/peerOrganizations/Transporter.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/Transporter.pharma-network.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -191,7 +191,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('TransporterMSP.peer')"
         AnchorPeers:
-        - Host: peer0.Transporter.example.com
+        - Host: peer0.Transporter.pharma-network.com
           Port: 15051                
 
 ################################################################################
@@ -304,14 +304,14 @@ Orderer: &OrdererDefaults
     # as TLS validation.  The preferred way to specify orderer addresses is now
     # to include the OrdererEndpoints item in your org definition
     Addresses:
-        - orderer.example.com:7050
+        - orderer.pharma-network.com:7050
 
     # EtcdRaft:
     #     Consenters:
-    #     - Host: orderer.example.com
+    #     - Host: orderer.pharma-network.com
     #       Port: 7050
-    #       ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-    #       ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+    #       ClientTLSCert: ../organizations/ordererOrganizations/pharma-network.com/orderers/orderer.pharma-network.com/tls/server.crt
+    #       ServerTLSCert: ../organizations/ordererOrganizations/pharma-network.com/orderers/orderer.pharma-network.com/tls/server.crt
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
