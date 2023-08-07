@@ -394,7 +394,7 @@ class PharmaNetContract extends Contract {
       let drugKey = ctx.stub.createCompositeKey("pharmanet.drug", [drugDBKey]);
       let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => console.log(err));
       let drugDetails = JSON.parse(drugBuffer.toString());
-      console.log(JSON.stringify(drugDetails));s
+      console.log(JSON.stringify(drugDetails));
       // let companyKey = ctx.stub.createCompositeKey("pharmanet.company", [retailerCRN]);
 
       if (drugDetails.owner === retailerCRN) {
