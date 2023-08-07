@@ -1,0 +1,34 @@
+---
+name: pharma-network-Distributor
+version: 1.0.0
+client:
+  organization: Distributor
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Distributor:
+    mspid: DistributorMSP
+    peers:
+    - peer0.Distributor.pharma-network.com
+    - peer1.Distributor.pharma-network.com
+    certificateAuthorities:
+    - ca_Distributor
+peers:
+  peer0.Distributor.pharma-network.com:
+    url: grpcs://localhost:9051          
+    grpcOptions:
+      ssl-target-name-override: peer0.Distributor.pharma-network.com
+      hostnameOverride: peer0.Distributor.pharma-network.com
+  peer1.Distributor.pharma-network.com:
+    url: grpcs://localhost:10051          
+    grpcOptions:
+      ssl-target-name-override: peer1.Distributor.pharma-network.com
+      hostnameOverride: peer1.Distributor.pharma-network.com
+certificateAuthorities:
+  ca_Distributor:
+    url: https://localhost:8054
+    caName: ca_Distributor
+    httpOptions:
+      verify: false

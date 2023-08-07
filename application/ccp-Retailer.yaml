@@ -1,0 +1,34 @@
+---
+name: pharma-network-Retailer
+version: 1.0.0
+client:
+  organization: Retailer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Retailer:
+    mspid: RetailerMSP
+    peers:
+    - peer0.Retailer.pharma-network.com
+    - peer1.Retailer.pharma-network.com
+    certificateAuthorities:
+    - ca_Retailer
+peers:
+  peer0.Retailer.pharma-network.com:
+    url: grpcs://localhost:13051          
+    grpcOptions:
+      ssl-target-name-override: peer0.Retailer.pharma-network.com
+      hostnameOverride: peer0.Retailer.pharma-network.com
+  peer1.Retailer.pharma-network.com:
+    url: grpcs://localhost:14051          
+    grpcOptions:
+      ssl-target-name-override: peer1.Retailer.pharma-network.com
+      hostnameOverride: peer1.Retailer.pharma-network.com
+certificateAuthorities:
+  ca_Retailer:
+    url: https://localhost:10054
+    caName: ca_Retailer
+    httpOptions:
+      verify: false

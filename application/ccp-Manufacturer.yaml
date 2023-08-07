@@ -1,0 +1,34 @@
+---
+name: pharma-network-Manufacturer
+version: 1.0.0
+client:
+  organization: Manufacturer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Manufacturer:
+    mspid: ManufacturerMSP
+    peers:
+    - peer0.Manufacturer.pharma-network.com
+    - peer1.Manufacturer.pharma-network.com
+    certificateAuthorities:
+    - ca_Manufacturer
+peers:
+  peer0.Manufacturer.pharma-network.com:
+    url: grpcs://localhost:11051          
+    grpcOptions:
+      ssl-target-name-override: peer0.Manufacturer.pharma-network.com
+      hostnameOverride: peer0.Manufacturer.pharma-network.com
+  peer1.Manufacturer.pharma-network.com:
+    url: grpcs://localhost:12051          
+    grpcOptions:
+      ssl-target-name-override: peer1.Manufacturer.pharma-network.com
+      hostnameOverride: peer1.Manufacturer.pharma-network.com
+certificateAuthorities:
+  ca_Manufacturer:
+    url: https://localhost:9054
+    caName: ca_Manufacturer
+    httpOptions:
+      verify: false

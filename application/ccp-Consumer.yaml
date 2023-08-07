@@ -1,0 +1,34 @@
+---
+name: pharma-network-Consumer
+version: 1.0.0
+client:
+  organization: Consumer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Consumer:
+    mspid: ConsumerMSP
+    peers:
+    - peer0.Consumer.pharma-network.com
+    - peer1.Consumer.pharma-network.com
+    certificateAuthorities:
+    - ca_Consumer
+peers:
+  peer0.Consumer.pharma-network.com:
+    url: grpcs://localhost:7051          
+    grpcOptions:
+      ssl-target-name-override: peer0.Consumer.pharma-network.com
+      hostnameOverride: peer0.Consumer.pharma-network.com
+  peer1.Consumer.pharma-network.com:
+    url: grpcs://localhost:8051          
+    grpcOptions:
+      ssl-target-name-override: peer1.Consumer.pharma-network.com
+      hostnameOverride: peer1.Consumer.pharma-network.com
+certificateAuthorities:
+  ca_Consumer:
+    url: https://localhost:7054
+    caName: ca_Consumer
+    httpOptions:
+      verify: false
