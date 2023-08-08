@@ -10,3 +10,4 @@ rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-ne
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/Channels
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/temp
 rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/AnchorPeerTrans
+# rm -rf /home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/application/identity
