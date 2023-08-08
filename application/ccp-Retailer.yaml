@@ -17,12 +17,12 @@ organizations:
     - ca_Retailer
 peers:
   peer0.Retailer.pharma-network.com:
-    url: grpcs://localhost:13051          
+    url: grpc://localhost:13051          
     grpcOptions:
       ssl-target-name-override: peer0.Retailer.pharma-network.com
       hostnameOverride: peer0.Retailer.pharma-network.com
   peer1.Retailer.pharma-network.com:
-    url: grpcs://localhost:14051          
+    url: grpc://localhost:14051          
     grpcOptions:
       ssl-target-name-override: peer1.Retailer.pharma-network.com
       hostnameOverride: peer1.Retailer.pharma-network.com

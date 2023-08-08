@@ -17,12 +17,12 @@ organizations:
     - ca_Manufacturer
 peers:
   peer0.Manufacturer.pharma-network.com:
-    url: grpcs://localhost:11051          
+    url: grpc://localhost:11051          
     grpcOptions:
       ssl-target-name-override: peer0.Manufacturer.pharma-network.com
       hostnameOverride: peer0.Manufacturer.pharma-network.com
   peer1.Manufacturer.pharma-network.com:
-    url: grpcs://localhost:12051          
+    url: grpc://localhost:12051          
     grpcOptions:
       ssl-target-name-override: peer1.Manufacturer.pharma-network.com
       hostnameOverride: peer1.Manufacturer.pharma-network.com

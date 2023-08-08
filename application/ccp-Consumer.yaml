@@ -17,12 +17,12 @@ organizations:
     - ca_Consumer
 peers:
   peer0.Consumer.pharma-network.com:
-    url: grpcs://localhost:7051          
+    url: grpc://localhost:7051          
     grpcOptions:
       ssl-target-name-override: peer0.Consumer.pharma-network.com
       hostnameOverride: peer0.Consumer.pharma-network.com
   peer1.Consumer.pharma-network.com:
-    url: grpcs://localhost:8051          
+    url: grpc://localhost:8051          
     grpcOptions:
       ssl-target-name-override: peer1.Consumer.pharma-network.com
       hostnameOverride: peer1.Consumer.pharma-network.com
