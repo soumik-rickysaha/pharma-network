@@ -3,14 +3,17 @@
 const helper = require("./contractHelper");
 
 async function main(buyerCRN, sellerCRN, drugName, quantity, organisationRole) {
+  let responseBuffer;
   try {
     const contract = await helper.getContractInstance(organisationRole);
-    const responseBuffer = await contract.submitTransaction("createPO", buyerCRN, sellerCRN, drugName, quantity);
+    responseBuffer = await contract.submitTransaction("createPO", buyerCRN, sellerCRN, drugName, quantity);
     const PO = JSON.parse(responseBuffer.toString());
     console.log(PO);
     return PO;
   } catch (err) {
-    console.log("Failed to create PO. Error : " + err);
+    let errmsg = "Failed to create PO. Error : " + responseBuffer.toString();
+    console.log("Failed to create PO. Error : " + errmsg);
+    return errmsg;
   } finally {
     helper.disconnect();
   }

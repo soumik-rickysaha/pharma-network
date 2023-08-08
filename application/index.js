@@ -93,12 +93,22 @@ app.post("/addDrug", (req, res) => {
   addDrug
     .main(req.body.drugName, req.body.serialNo, req.body.mfgDate, req.body.expDate, req.body.companyCRN, req.body.organisationRole)
     .then((output) => {
-      const result = {
-        status: "success",
-        message: "Drug Added Successfully",
-        output: output,
-      };
-      res.json(result);
+      if(typeof output === "string"){
+        const result = {
+          status: "error",
+          message: "Failed to Add Drug",
+          error: output,
+        };
+        res.status(500).send(result);
+      }else{
+        const result = {
+          status: "success",
+          message: "Drug Added Successfully",
+          output: output,
+        };
+        res.json(result);
+      }
+    
     })
     .catch((e) => {
       const result = {
@@ -114,12 +124,21 @@ app.post("/createPO", (req, res) => {
   createPO
     .main(req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.quantity, req.body.organisationRole)
     .then((output) => {
-      const result = {
-        status: "success",
-        message: "PO created Successfully",
-        output: output,
-      };
-      res.json(result);
+      if(typeof output === "string"){
+        const result = {
+          status: "error",
+          message: "Failed to create PO",
+          error: output,
+        };
+        res.status(500).send(result);
+      }else{
+        const result = {
+          status: "success",
+          message: "PO created Successfully",
+          output: output,
+        };
+        res.json(result);
+      }
     })
     .catch((e) => {
       const result = {
@@ -135,12 +154,21 @@ app.post("/createShipment", (req, res) => {
   createShipment
     .main(req.body.buyerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.organisationRole)
     .then((output) => {
-      const result = {
-        status: "success",
-        message: "Shipment created Successfully",
-        output: output,
-      };
-      res.json(result);
+      if(typeof output === "string"){
+        const result = {
+          status: "error",
+          message: "Failed to create Shipment",
+          error: output,
+        };
+        res.status(500).send(result);
+      }else{
+        const result = {
+          status: "success",
+          message: "Shipment created Successfully",
+          output: output,
+        };
+        res.json(result);
+      }
     })
     .catch((e) => {
       const result = {
@@ -156,12 +184,21 @@ app.post("/updateShipment", (req, res) => {
   updateShipment
     .main(req.body.buyerCRN, req.body.drugName, req.body.transporterCRN, req.body.organisationRole)
     .then((output) => {
-      const result = {
-        status: "success",
-        message: "Shipment updated Successfully",
-        output: output,
-      };
-      res.json(result);
+      if(typeof output === "string"){
+        const result = {
+          status: "error",
+          message: "Failed to update shipment",
+          error: output,
+        };
+        res.status(500).send(result);
+      }else{
+        const result = {
+          status: "success",
+          message: "Shipment created Successfully",
+          output: output,
+        };
+        res.json(result);
+      }
     })
     .catch((e) => {
       const result = {
@@ -177,12 +214,21 @@ app.post("/retailDrug", (req, res) => {
   retailDrug
     .main(req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.customerAadhar, req.body.organisationRole)
     .then((output) => {
-      const result = {
-        status: "success",
-        message: "Drug sold Successfully",
-        output: output,
-      };
-      res.json(result);
+      if(typeof output === "string"){
+        const result = {
+          status: "error",
+          message: "Failed to sell Drug",
+          error: output,
+        };
+        res.status(500).send(result);
+      }else{
+        const result = {
+          status: "success",
+          message: "Drug sold Successfully",
+          output: output,
+        };
+        res.json(result);
+      }
     })
     .catch((e) => {
       const result = {

@@ -143,18 +143,17 @@ class PharmaNetContract extends Contract {
               updatedAt: ctx.stub.getTxTimestamp(),
             };
 
-            console.log("===================================" + drugDetails);
             let drugBuffer = Buffer.from(JSON.stringify(drugDetails));
             await ctx.stub.putState(drugKey, drugBuffer);
             return drugDetails;
           } else {
-            console.log("=================================== Organisation Role Did not match");
+            return "Organisation Role Did not match";
           }
         } else {
-          console.log("=================================== Issue with Company details Buffer");
+          return "Issue with Company details Buffer";
         }
       } catch (err) {
-        console.log("Error in adding drug" + err);
+        return "Error in adding drug" + err;
       }
     } else {
       return "Error in adding drug. Hierarchy does not match";
@@ -227,14 +226,14 @@ class PharmaNetContract extends Contract {
             await ctx.stub.putState(poKey, poBuffer);
             return poDetails;
           } else {
-            console.log("The buyer and seller are not matchig the criteria");
+            return "The buyer and seller are not matchig the criteria";
           }
-          return po;
+          // return po;
         } else {
-          console.log("The Buyer Or Seller are not registered in the system");
+          return "The Buyer Or Seller are not registered in the system";
         }
       } catch (err) {
-        console.log("Failed to get Buyer or Seller Keys." + err);
+        return "Failed to get Buyer or Seller Keys." + err;
       }
     } else {
       return "Error in creating PO. Hierarchy does not match";
@@ -314,10 +313,10 @@ class PharmaNetContract extends Contract {
         }
         return shipmentObject;
       } else {
-        console.log("User is not allowed to create shipment");
+        return "User is not allowed to create shipment";
       }
     } catch (err) {
-      console.log("Error in create shipment : " + err);
+      return "Error in create shipment : " + err;
     }
   }
 
@@ -429,18 +428,18 @@ class PharmaNetContract extends Contract {
       if (res.value && res.value.value.toString()) {
         // console.log("=============== res.value = " + res.value);
         // console.log("=============== res.value.value = " + res.value.value.toString());
-        let JSONRes={};
-        JSONRes.Key=res.value.key;
-        try{
-          JSONRes.Record=JSON.parse(res.value.value.toString());
-        }catch(err){
+        let JSONRes = {};
+        JSONRes.Key = res.value.key;
+        try {
+          JSONRes.Record = JSON.parse(res.value.value.toString());
+        } catch (err) {
           console.log(err);
-          JSONRes.Record=res.value.value.toString();
+          JSONRes.Record = res.value.value.toString();
         }
         allDurgResult.push(JSONRes);
       }
 
-      if(res.done){
+      if (res.done) {
         // console.log("End of Data");
         await drugHistoryIterator.close();
         // console.log(allDurgResult);

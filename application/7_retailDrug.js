@@ -3,14 +3,17 @@
 const helper = require("./contractHelper");
 
 async function main(drugName, serialNo, retailerCRN, customerAadhar, organisationRole) {
+  let responseBuffer;
   try {
     const contract = await helper.getContractInstance(organisationRole);
-    const responseBuffer = await contract.submitTransaction("retailDrug", drugName, serialNo, retailerCRN, customerAadhar);
+    responseBuffer = await contract.submitTransaction("retailDrug", drugName, serialNo, retailerCRN, customerAadhar);
     const retailDrugDetails = JSON.parse(responseBuffer.toString());
     console.log(retailDrugDetails);
     return retailDrugDetails;
   } catch (err) {
-    console.log("Failed to Retail Drug. Error : " + err);
+    let errmsg = "Failed to Retail Drug. Error : " + responseBuffer.toString();
+    console.log("Failed to Retail Drug. Error : " + errmsg);
+    return errmsg;
   } finally {
     helper.disconnect();
   }
