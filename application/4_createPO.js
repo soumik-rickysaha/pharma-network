@@ -2,6 +2,15 @@
 
 const helper = require("./contractHelper");
 
+  /**
+   * @description This function is used to create a Purchase Order (PO) to buy drugs, by companies belonging to ‘Distributor’ or ‘Retailer’ organisation.
+   * @param {*} buyerCRN CRN of the Company who is rasing the PO
+   * @param {*} sellerCRN CRN of the Company who is selling the drug
+   * @param {*} drugName Name of the drug
+   * @param {*} quantity Quantity of the drug that is being purchased/sold
+   * @param {*} organisationRole  This field will represent the Organization role
+   */
+
 async function main(buyerCRN, sellerCRN, drugName, quantity, organisationRole) {
   let responseBuffer;
   try {
@@ -19,5 +28,5 @@ async function main(buyerCRN, sellerCRN, drugName, quantity, organisationRole) {
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
+
 module.exports.main = main;

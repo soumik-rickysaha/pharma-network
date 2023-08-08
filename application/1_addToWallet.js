@@ -3,6 +3,14 @@
 const fs = require("fs");
 const { Wallets } = require("fabric-network");
 
+
+/**
+ * @description This fucntion will be used to create Identities
+ * @param {*} certificatePath This will contain user certificate path
+ * @param {*} privateKeyFilePath This will contain user private key path
+ * @param {*} organisationRole This will contain user Organization details
+ */
+
 async function main(certificatePath, privateKeyFilePath, organisationRole) {
   try {
     const wallet = await Wallets.newFileSystemWallet("./identity/Orgs/" + organisationRole);
@@ -30,6 +38,3 @@ async function main(certificatePath, privateKeyFilePath, organisationRole) {
 }
 
 module.exports.main = main;
-// const certPath="/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp/signcerts/Admin@Manufacturer.pharma-network.com-cert.pem"
-// const keyPath="/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp/keystore/priv_sk"
-// main(certPath,keyPath,"Manufacturer");

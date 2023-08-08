@@ -2,7 +2,14 @@
 
 const helper = require("./contractHelper");
 
-async function main(drugName, serialNo,organisationRole) {
+/**
+ * @description This function is used view the current state of the DRUG
+ * @param {*} drugName Name of the Drug
+ * @param {*} serialNo SerailNo of the Drug
+ * @param {*} organisationRole  This field will represent the Organization role
+ */
+
+async function main(drugName, serialNo, organisationRole) {
   try {
     const contract = await helper.getContractInstance(organisationRole);
     const responseBuffer = await contract.submitTransaction("viewDrugCurrentState", drugName, serialNo);
@@ -16,5 +23,4 @@ async function main(drugName, serialNo,organisationRole) {
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
-module.exports.main=main;
+module.exports.main = main;

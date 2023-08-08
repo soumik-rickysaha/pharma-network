@@ -2,6 +2,14 @@
 
 const helper = require("./contractHelper");
 
+  /**
+   * @description This function is used to update a shipment
+   * @param {*} buyerCRN CRN of the Company who is rasing the PO
+   * @param {*} drugName Name of the Drug
+   * @param {*} transporterCRN Details of the transporter
+   * @param {*} organisationRole  This field will represent the Organization role
+   */
+
 async function main(buyerCRN, drugName, transporterCRN,organisationRole) {
   let responseBuffer;
   try {
@@ -19,5 +27,5 @@ async function main(buyerCRN, drugName, transporterCRN,organisationRole) {
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
+
 module.exports.main=main;

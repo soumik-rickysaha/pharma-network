@@ -2,6 +2,14 @@
 
 const helper = require("./contractHelper");
 
+/**
+ * @description This fucntion will be used to register Companies
+ * @param {*} companyCRN This field stores the composite key with which the company will get registered on the network. The key comprises the Company Registration Number (CRN) and the Name of the company along with appropriate namespace
+ * @param {*} companyName Name of the company
+ * @param {*} Location Location of the company
+ * @param {*} organisationRole  This field will represent the Organization role
+ */
+
 async function main(companyCRN, companyName, Location, organisationRole) {
   let responseBuffer;
 
@@ -20,5 +28,4 @@ async function main(companyCRN, companyName, Location, organisationRole) {
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
-module.exports.main=main;
+module.exports.main = main;

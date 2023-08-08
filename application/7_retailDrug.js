@@ -2,6 +2,15 @@
 
 const helper = require("./contractHelper");
 
+ /**
+   * @description This function is used to sell the durg to the consumer
+   * @param {*} drugName Name of the Drug
+   * @param {*} serialNo SerailNo of the Drug
+   * @param {*} retailerCRN SerailNo of the Drug
+   * @param {*} customerAadhar SerailNo of the Drug
+   * @param {*} organisationRole  This field will represent the Organization role
+   */
+
 async function main(drugName, serialNo, retailerCRN, customerAadhar, organisationRole) {
   let responseBuffer;
   try {
@@ -19,5 +28,5 @@ async function main(drugName, serialNo, retailerCRN, customerAadhar, organisatio
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
+
 module.exports.main = main;

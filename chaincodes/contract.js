@@ -71,7 +71,7 @@ class PharmaNetContract extends Contract {
    * @param {*} companyCRN This field stores the composite key with which the company will get registered on the network. The key comprises the Company Registration Number (CRN) and the Name of the company along with appropriate namespace
    * @param {*} companyName Name of the company
    * @param {*} Location Location of the company
-   * @param {*} organisationRole  This field will take
+   * @param {*} organisationRole  This field will represent the Organization role
    */
 
   async registerCompany(ctx, companyCRN, companyName, Location, organisationRole) {
@@ -104,10 +104,10 @@ class PharmaNetContract extends Contract {
    * @description This transaction is used by any organisation registered as a ‘manufacturer’ to register a new drug on the ledger.
    * @param {*} ctx The transaction context object
    * @param {*} drugName Name of the product
-   * @param {*} serialNo Composite key of the manufacturer used to store manufacturer’s detail on the ledger
+   * @param {*} serialNo Serial Number of the Drug
    * @param {*} mfgDate Date of manufacturing of the drug
    * @param {*} expDate Expiration date of the drug
-   * @param {*} companyCRN This field stores the composite key with which the company will get registered on the network. The key comprises the Company Registration Number (CRN) and the Name of the company along with appropriate namespace
+   * @param {*} companyCRN This field stores the key with which the company will get registered on the network. The key comprises the Company Registration Number (CRN) and the Name of the company along with appropriate namespace
    */
 
   async addDrug(ctx, drugName, serialNo, mfgDate, expDate, companyCRN) {
@@ -159,21 +159,6 @@ class PharmaNetContract extends Contract {
       return "Error in adding drug. Hierarchy does not match";
     }
   }
-
-  /**
-   * @description This function create the purchase orject object
-   * @param {*} poID Stores the composite key of the PO using which the PO is stored on the ledger.
-   * @param {*} drugName Contains the name of the drug for which the PO is raised.
-   * @param {*} quantity Denotes the number of units required.
-   * @param {*} buyer Stores the composite key of the buyer.
-   * @param {*} seller Stores the composite key of the seller of the drugs.
-   */
-
-  // generatePOModel(poID, drugName, quantity, buyer, seller) {
-  //   // Create and return PO Model
-
-  //   return poDetails;
-  // }
 
   /**
    * @description This function is used to create a Purchase Order (PO) to buy drugs, by companies belonging to ‘Distributor’ or ‘Retailer’ organisation.

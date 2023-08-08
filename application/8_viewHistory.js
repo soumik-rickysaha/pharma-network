@@ -2,6 +2,13 @@
 
 const helper = require("./contractHelper");
 
+/**
+ * @description This function is used view the History of the DRUG
+ * @param {*} drugName Name of the Drug
+ * @param {*} serialNo SerailNo of the Drug
+ * @param {*} organisationRole  This field will represent the Organization role
+ */
+
 async function main(drugName, serialNo, organisationRole) {
   try {
     const contract = await helper.getContractInstance(organisationRole);
@@ -16,5 +23,5 @@ async function main(drugName, serialNo, organisationRole) {
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
+
 module.exports.main = main;

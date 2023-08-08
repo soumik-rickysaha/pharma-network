@@ -2,6 +2,15 @@
 
 const helper = require("./contractHelper");
 
+  /**
+   * @description This function is used to create a shipment
+   * @param {*} buyerCRN CRN of the Company who is rasing the PO
+   * @param {*} drugName Name of the Drug
+   * @param {*} listOfAssets Drug serial numbers
+   * @param {*} transporterCRN Details of the transporter
+   * @param {*} organisationRole  This field will represent the Organization role
+   */
+
 async function main(buyerCRN, drugName, listOfAssets, transporterCRN, organisationRole) {
   let responseBuffer;
   try {
@@ -19,5 +28,5 @@ async function main(buyerCRN, drugName, listOfAssets, transporterCRN, organisati
   }
 }
 
-// main("MAN001", "Sun Pharma", "Chennai", "Manufacturer");
+
 module.exports.main = main;
