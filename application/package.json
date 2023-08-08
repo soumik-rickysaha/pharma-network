@@ -1,0 +1,22 @@
+{
+  "name": "pharma_network",
+  "version": "1.0.0",
+  "description": "NodeJS Application for Pharma Chaincode on Fabric Network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon index.js"
+  },
+  "author": "Soumik Saha",
+  "license": "ISC",
+  "dependencies": {
+    "fabric-network":"^2.2.13",
+    "express":"4.18.2",
+    "cors":"2.8.5",
+    "js-yaml":"^4.1.0"
+  },
+  "devDependencies": {
+    "eslint":"^8.46.0",
+    "nodemon":"^3.0.1"
+  }
+}

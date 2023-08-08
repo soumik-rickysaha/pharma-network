@@ -1,0 +1,34 @@
+---
+name: pharma-network-Transporter
+version: 1.0.0
+client:
+  organization: Transporter
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Transporter:
+    mspid: TransporterMSP
+    peers:
+    - peer0.Transporter.pharma-network.com
+    - peer1.Transporter.pharma-network.com
+    certificateAuthorities:
+    - ca_Transporter
+peers:
+  peer0.Transporter.pharma-network.com:
+    url: grpc://localhost:15051          
+    grpcOptions:
+      ssl-target-name-override: peer0.Transporter.pharma-network.com
+      hostnameOverride: peer0.Transporter.pharma-network.com
+  peer1.Transporter.pharma-network.com:
+    url: grpc://localhost:16051          
+    grpcOptions:
+      ssl-target-name-override: peer1.Transporter.pharma-network.com
+      hostnameOverride: peer1.Transporter.pharma-network.com
+certificateAuthorities:
+  ca_Transporter:
+    url: https://localhost:11054
+    caName: ca_Transporter
+    httpOptions:
+      verify: false
