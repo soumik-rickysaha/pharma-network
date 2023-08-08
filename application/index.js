@@ -72,13 +72,17 @@ app.post("/registerCompany", (req, res) => {
   registerCompany
     .main(req.body.companyCRN, req.body.companyName, req.body.Location, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Company Added Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed To Add Company",
         error: e,
       };
       res.status(500).send(result);
@@ -89,13 +93,17 @@ app.post("/addDrug", (req, res) => {
   addDrug
     .main(req.body.drugName, req.body.serialNo, req.body.mfgDate, req.body.expDate, req.body.companyCRN, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Drug Added Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to Add Drug",
         error: e,
       };
       res.status(500).send(result);
@@ -106,13 +114,17 @@ app.post("/createPO", (req, res) => {
   createPO
     .main(req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.quantity, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "PO created Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to create PO",
         error: e,
       };
       res.status(500).send(result);
@@ -123,13 +135,17 @@ app.post("/createShipment", (req, res) => {
   createShipment
     .main(req.body.buyerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Shipment created Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to create shipment",
         error: e,
       };
       res.status(500).send(result);
@@ -140,13 +156,17 @@ app.post("/updateShipment", (req, res) => {
   updateShipment
     .main(req.body.buyerCRN, req.body.drugName, req.body.transporterCRN, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Shipment updated Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to update shipment",
         error: e,
       };
       res.status(500).send(result);
@@ -157,13 +177,17 @@ app.post("/retailDrug", (req, res) => {
   retailDrug
     .main(req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.customerAadhar, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Drug sold Successfully",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to sell drug",
         error: e,
       };
       res.status(500).send(result);
@@ -174,34 +198,41 @@ app.post("/viewHistory", (req, res) => {
   viewHistory
     .main(req.body.drugName, req.body.serialNo, req.body.organisationRole)
     .then((output) => {
-      //   console.log("User Credentials added to wallet");
-      res.json(output);
+      const result = {
+        status: "success",
+        message: "Drug History Found",
+        output: output,
+      };
+      res.json(result);
     })
     .catch((e) => {
       const result = {
         status: "error",
-        message: "Failed",
+        message: "Failed to get Drug History",
         error: e,
       };
       res.status(500).send(result);
     });
 });
 
-
 app.post("/viewDrugCurrentState", (req, res) => {
-    viewDrugCurrentState
-      .main(req.body.drugName, req.body.serialNo, req.body.organisationRole)
-      .then((output) => {
-        //   console.log("User Credentials added to wallet");
-        res.json(output);
-      })
-      .catch((e) => {
-        const result = {
-          status: "error",
-          message: "Failed",
-          error: e,
-        };
-        res.status(500).send(result);
-      });
-  });
+  viewDrugCurrentState
+    .main(req.body.drugName, req.body.serialNo, req.body.organisationRole)
+    .then((output) => {
+      const result = {
+        status: "success",
+        message: "Drug current state found",
+        output: output,
+      };
+      res.json(result);
+    })
+    .catch((e) => {
+      const result = {
+        status: "error",
+        message: "Failed to get drug current state",
+        error: e,
+      };
+      res.status(500).send(result);
+    });
+});
 app.listen(port, () => console.log(`Pharma Network is running on port ${port}`));

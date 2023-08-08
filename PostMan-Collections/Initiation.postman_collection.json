@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "62fb8942-2ebe-43ff-b3e0-2d9843559db0",
+		"name": "Initiation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Company : Manufacturer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "companyCRN",
+							"value": "MAN001",
+							"type": "text"
+						},
+						{
+							"key": "companyName",
+							"value": "Sun Pharma",
+							"type": "text"
+						},
+						{
+							"key": "Location",
+							"value": "Chennai",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/registerCompany",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Company : Distributor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "companyCRN",
+							"value": "DIST001",
+							"type": "text"
+						},
+						{
+							"key": "companyName",
+							"value": "VG Pharma",
+							"type": "text"
+						},
+						{
+							"key": "Location",
+							"value": "Vizag",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Distributor",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/registerCompany",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Company : Transporter FedEx",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "companyCRN",
+							"value": "TRA001",
+							"type": "text"
+						},
+						{
+							"key": "companyName",
+							"value": "FedEx",
+							"type": "text"
+						},
+						{
+							"key": "Location",
+							"value": "Delhi",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Transporter",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/registerCompany",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Company : Transporter Blue-Dart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "companyCRN",
+							"value": "TRA002",
+							"type": "text"
+						},
+						{
+							"key": "companyName",
+							"value": "Blue Dart",
+							"type": "text"
+						},
+						{
+							"key": "Location",
+							"value": "Bangalore",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Transporter",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/registerCompany",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Company : Retailer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "companyCRN",
+							"value": "RET002",
+							"type": "text"
+						},
+						{
+							"key": "companyName",
+							"value": "Upgrad",
+							"type": "text"
+						},
+						{
+							"key": "Location",
+							"value": "Mumbai",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Retailer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/registerCompany",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registerCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Drug : Paracetamol -001",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "default"
+						},
+						{
+							"key": "serialNo",
+							"value": "001",
+							"type": "default"
+						},
+						{
+							"key": "mfgDate",
+							"value": "1/1/2020",
+							"type": "default"
+						},
+						{
+							"key": "expDate",
+							"value": "1/1/2023",
+							"type": "default"
+						},
+						{
+							"key": "companyCRN",
+							"value": "MAN001-Sun Pharma",
+							"type": "default"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addDrug",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Drug : Paracetamol -002",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "default"
+						},
+						{
+							"key": "serialNo",
+							"value": "002",
+							"type": "default"
+						},
+						{
+							"key": "mfgDate",
+							"value": "1/1/2020",
+							"type": "default"
+						},
+						{
+							"key": "expDate",
+							"value": "1/1/2023",
+							"type": "default"
+						},
+						{
+							"key": "companyCRN",
+							"value": "MAN001-Sun Pharma",
+							"type": "default"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addDrug",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Drug : Paracetamol -003",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "default"
+						},
+						{
+							"key": "serialNo",
+							"value": "003",
+							"type": "default"
+						},
+						{
+							"key": "mfgDate",
+							"value": "1/1/2020",
+							"type": "default"
+						},
+						{
+							"key": "expDate",
+							"value": "1/1/2023",
+							"type": "default"
+						},
+						{
+							"key": "companyCRN",
+							"value": "MAN001-Sun Pharma",
+							"type": "default"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addDrug",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Drug : Paracetamol -004",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "default"
+						},
+						{
+							"key": "serialNo",
+							"value": "004",
+							"type": "default"
+						},
+						{
+							"key": "mfgDate",
+							"value": "1/1/2020",
+							"type": "default"
+						},
+						{
+							"key": "expDate",
+							"value": "1/1/2023",
+							"type": "default"
+						},
+						{
+							"key": "companyCRN",
+							"value": "MAN001-Sun Pharma",
+							"type": "default"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addDrug",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addDrug"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

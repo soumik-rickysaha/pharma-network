@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "089aa974-468e-4234-99d0-2d84624ce25b",
+		"name": "Setup Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consumer Wallet Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "certificatePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Consumer.pharma-network.com/users/Admin@Consumer.pharma-network.com/msp/signcerts/Admin@Consumer.pharma-network.com-cert.pem",
+							"type": "text"
+						},
+						{
+							"key": "privateKeyFilePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Consumer.pharma-network.com/users/Admin@Consumer.pharma-network.com/msp/keystore/priv_sk",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Consumer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addToWallet",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retailer Wallet Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "certificatePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Retailer.pharma-network.com/users/Admin@Retailer.pharma-network.com/msp/signcerts/Admin@Retailer.pharma-network.com-cert.pem",
+							"type": "text"
+						},
+						{
+							"key": "privateKeyFilePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Retailer.pharma-network.com/users/Admin@Retailer.pharma-network.com/msp/keystore/priv_sk",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Retailer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addToWallet",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transporter Wallet Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "certificatePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp/signcerts/Admin@Transporter.pharma-network.com-cert.pem",
+							"type": "text"
+						},
+						{
+							"key": "privateKeyFilePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Transporter.pharma-network.com/users/Admin@Transporter.pharma-network.com/msp/keystore/priv_sk",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Transporter",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addToWallet",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Distributor Wallet Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "certificatePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Distributor.pharma-network.com/users/Admin@Distributor.pharma-network.com/msp/signcerts/Admin@Distributor.pharma-network.com-cert.pem",
+							"type": "text"
+						},
+						{
+							"key": "privateKeyFilePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Distributor.pharma-network.com/users/Admin@Distributor.pharma-network.com/msp/keystore/priv_sk",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Distributor",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addToWallet",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manufacturer Wallet Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "certificatePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp/signcerts/Admin@Manufacturer.pharma-network.com-cert.pem",
+							"type": "text"
+						},
+						{
+							"key": "privateKeyFilePath",
+							"value": "/home/soumik/All_DEV/BlockChain/HyperLedger-Fabric/pharma-network/test-network-man/organizations/peerOrganizations/Manufacturer.pharma-network.com/users/Admin@Manufacturer.pharma-network.com/msp/keystore/priv_sk",
+							"type": "text"
+						},
+						{
+							"key": "organisationRole",
+							"value": "Manufacturer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/addToWallet",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
